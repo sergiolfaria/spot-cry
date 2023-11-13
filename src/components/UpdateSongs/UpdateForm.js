@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { updateMusicsFromData } from "../services/updateMusica";
-import { getMusicsFromData } from "../services/getMusicData";
+import {updateMusicsFromData} from "../../services/updateMusica"
+import { getMusicsFromData } from "../../services/getMusicData";
 
-export const UpdateForm = ({ songId }) => {
+const UpdateForm = ({ songId, onCancel }) => {
   const [updatedData, setUpdatedData] = useState({
     title: "",
     artist: "",
     url: "",
-   
   });
 
   useEffect(() => {
@@ -19,12 +18,10 @@ export const UpdateForm = ({ songId }) => {
       const response = await getMusicsFromData(id);
       const songData = response.data.song;
 
-      // Atualize o estado com os dados da música
       setUpdatedData({
         title: songData.title,
         artist: songData.artist,
         url: songData.url,
-        // Atualize outros campos conforme necessário
       });
     } catch (error) {
       console.error("Erro ao buscar dados da música:", error);
@@ -33,17 +30,9 @@ export const UpdateForm = ({ songId }) => {
 
   const handleUpdate = async () => {
     try {
-      // Chame a função do serviço para atualizar os dados
       await updateMusicsFromData(songId, updatedData);
-
-      // Limpe os campos após a atualização bem-sucedida (se necessário)
-      setUpdatedData({
-        title: "",
-        artist: "",
-        url: "",
-        // Limpe outros campos conforme necessário
-      });
-
+      setUpdatedData({ title: "", artist: "", url: "" });
+      onCancel();
       alert("Música atualizada com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar a música:", error);
@@ -91,11 +80,13 @@ export const UpdateForm = ({ songId }) => {
           onChange={handleChange}
         />
       </label>
-      {/* Adicione outros campos conforme necessário */}
       <br />
       <button onClick={handleUpdate}>Atualizar Música</button>
+      <button onClick={onCancel}>Cancelar</button>
     </div>
   );
 };
+
+export default UpdateForm;
 
  

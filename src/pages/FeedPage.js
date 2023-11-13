@@ -3,17 +3,17 @@ import { getPlaylistsFromUser } from "../services/playlist";
 import { getMusicsFromData } from "../services/getMusicData";
 import SongForm from '../components/PostSongs/FormPostSongs';
 import { deleteMusicsFromData } from "../services/deleteSong";
-import { UpdateForm } from "../components/UpdateSongs/UpdateForm";
-
+import UpdateForm from "../components/UpdateSongs/UpdateForm"
 
 export function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setsongs] = useState([]);
+  const [editingSongId, setEditingSongId] = useState(null);
 
   useEffect(() => {
     fetchPlaylists();
     fetchMusics();
-  }, [songs, playlists]);
+  }, []);
 
   const fetchPlaylists = async () => {
     try {
@@ -44,6 +44,10 @@ export function FeedPage() {
     }
   };
 
+  const handleEdit = (songId) => {
+    setEditingSongId(songId);
+  };
+
   return (
     <div>
       <h1>My Playlist</h1>
@@ -60,11 +64,17 @@ export function FeedPage() {
             <li key={song.id}>
               {index + 1} {song.title}
               <button onClick={() => handleDelete(song.id)}>Excluir</button>
+              <button onClick={() => handleEdit(song.id)}>Editar</button>
+              {editingSongId === song.id && (
+                <UpdateForm
+                  songId={song.id}
+                  onCancel={() => setEditingSongId(null)}
+                />
+              )}
             </li>
           ))}
       </ul>
       <SongForm />
-      <UpdateSongForm/>
     </div>
   );
 }
