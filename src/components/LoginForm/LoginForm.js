@@ -1,11 +1,5 @@
-import {
-  FormContainer,
-  LoginTitle,
-  LogoWithText,
-  StyledForm,
-  StyledInput,
-  StyledButton,
-} from "./Styles";
+import React, { useState } from "react";
+import { FormContainer, LoginTitle, LogoWithText, StyledForm, StyledInput, StyledButton } from "./Styles";
 import logoLogin from "../../assets/logoLogin.png";
 import useForm from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +10,13 @@ export const LoginForm = () => {
   const [form, onChange, clear] = useForm({ email: "", password: "" });
   const navigate = useNavigate();
 
-  const onSubmitLogin = (event) => {
+  const onSubmitLogin = async (event) => {
     event.preventDefault();
-    login(form, navigate);
+    try {
+      await login(form, navigate);
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
   };
 
   return (
@@ -36,7 +34,7 @@ export const LoginForm = () => {
           <SimpleText text="Senha:" />
           <StyledInput type="password" name="password" onChange={onChange} required={true} value={form.password} />
         </div>
-        <StyledButton type={"submit"} value={"Entrar"} onClick={onSubmitLogin}/>
+        <StyledButton type={"submit"} value={"Entrar"} onClick={onSubmitLogin} />
       </StyledForm>
     </FormContainer>
   );

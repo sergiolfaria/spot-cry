@@ -1,42 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { getPlaylistsFromUser } from "../services/playlist";
-import { getMusicsFromData } from "../services/getMusicData";
+import React, { useState, useEffect } from 'react';
+import { getPlaylistsFromUser } from '../services/playlist';
+import { getMusicsFromData } from '../services/getMusicData';
 import SongForm from '../components/PostSongs/FormPostSongs';
-import { deleteMusicsFromData } from "../services/deleteSong";
-import UpdateForm from "../components/UpdateSongs/UpdateForm"
+import { deleteMusicsFromData } from '../services/deleteSong';
+import UpdateForm from '../components/UpdateSongs/UpdateForm';
+import Loading from '../components/Loading/Loading';
+import {
+  FeedPageContainer,
+  FeedContainer,
+  PlaylistContainer,
+  SongsContainer,
+  Title,
+  List,
+  ListItem,
+  SongButtons,
+  AddSongContainer,
+  SongContainer,
+  SongInfo,
+  SongTitle,
+  SongArtist,
+} from './Styles/FeedStyles';
 
-export function FeedPage() {
+function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setsongs] = useState([]);
   const [editingSongId, setEditingSongId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPlaylists();
-    fetchMusics();
+    fetchData();
   }, []);
 
-  const fetchPlaylists = async () => {
+  const fetchData = async () => {
     try {
-      const response = await getPlaylistsFromUser();
-      setPlaylists(response.data.playlists);
-    } catch (error) {
-      console.error("Erro ao buscar playlists:", error);
-    }
-  };
+      setLoading(true);
 
-  const fetchMusics = async () => {
-    try {
-      const response = await getMusicsFromData();
-      setsongs(response.data.songs);
+      const playlistsResponse = await getPlaylistsFromUser();
+      setPlaylists(playlistsResponse.data.playlists);
+
+      const songsResponse = await getMusicsFromData();
+      setsongs(songsResponse.data.songs);
     } catch (error) {
-      console.error("Erro ao buscar musicas:", error);
+      console.error('Erro ao buscar dados:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDelete = async (songId) => {
     try {
       await deleteMusicsFromData(songId);
-      fetchMusics();
+      fetchData();
       alert('Música excluída com sucesso!');
     } catch (error) {
       console.error('Erro ao excluir a música:', error);
@@ -48,34 +62,53 @@ export function FeedPage() {
     setEditingSongId(songId);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <div>
-      <h1>My Playlist</h1>
-      <ul>
-        {Array.isArray(playlists) &&
-          playlists.map((playlist, index) => (
-            <li key={playlist._id}>{index + 1} {playlist._name} </li>
-          ))}
-      </ul>
-      <h1>All Songs</h1>
-      <ul>
-        {Array.isArray(songs) &&
-          songs.map((song, index) => (
-            <li key={song.id}>
-              {index + 1} {song.title}
-              <button onClick={() => handleDelete(song.id)}>Excluir</button>
-              <button onClick={() => handleEdit(song.id)}>Editar</button>
-              {editingSongId === song.id && (
-                <UpdateForm
-                  songId={song.id}
-                  onCancel={() => setEditingSongId(null)}
-                />
-              )}
-            </li>
-          ))}
-      </ul>
-      <SongForm />
-    </div>
+    <FeedPageContainer>
+      <FeedContainer>
+        <PlaylistContainer>
+          <Title>My Playlist</Title>
+          <List>
+            {Array.isArray(playlists) &&
+              playlists.map((playlist, index) => (
+                <ListItem key={playlist._id}>{index + 1} {playlist._name} </ListItem>
+              ))}
+          </List>
+        </PlaylistContainer>
+
+        <SongsContainer>
+          <Title>All Songs</Title>
+          <List>
+            {Array.isArray(songs) &&
+              songs.map((song, index) => (
+                <SongContainer key={song.id}>
+                  <SongInfo>
+                    <SongTitle>{index + 1} {song.title}</SongTitle>
+                    <SongArtist>{song.artist}</SongArtist>
+                  </SongInfo>
+                  <SongButtons>
+                    <button className="delete" onClick={() => handleDelete(song.id)}>Excluir</button>
+                    <button className="edit" onClick={() => handleEdit(song.id)}>Editar</button>
+                  </SongButtons>
+                  {editingSongId === song.id && (
+                    <UpdateForm
+                      songId={song.id}
+                      onCancel={() => setEditingSongId(null)}
+                    />
+                  )}
+                </SongContainer>
+              ))}
+          </List>
+        </SongsContainer>
+
+        <AddSongContainer>
+          <SongForm />
+        </AddSongContainer>
+      </FeedContainer>
+    </FeedPageContainer>
   );
 }
 

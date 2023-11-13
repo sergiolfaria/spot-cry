@@ -48,7 +48,7 @@ export const StyledButton = styled.input`
   height: 3rem;
   border: none;
   border-radius: 10px;
-  background-color: ${COLORS.yellow};
+  background-color: ${COLORS.indigo};
   color: ${COLORS.white};
   font-size: 20px;
   font-family: "Roboto";
@@ -56,9 +56,10 @@ export const StyledButton = styled.input`
   margin-top: 1rem;
   margin-bottom: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s, border 0.1s;
   &:hover {
-    background-color: ${COLORS.white};
-    color: ${COLORS.yellow};
+    background-color: purple;
+    color: ${COLORS.darkYellow};
     border: 2px solid ${COLORS.yellow};
   }
 `;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {updateMusicsFromData} from "../../services/updateMusica"
+import { updateMusicsFromData } from "../../services/updateMusica";
 import { getMusicsFromData } from "../../services/getMusicData";
 
 const UpdateForm = ({ songId, onCancel }) => {
@@ -19,9 +19,9 @@ const UpdateForm = ({ songId, onCancel }) => {
       const songData = response.data.song;
 
       setUpdatedData({
-        title: songData.title,
-        artist: songData.artist,
-        url: songData.url,
+        title: songData.title || "",
+        artist: songData.artist || "",
+        url: songData.url || "",
       });
     } catch (error) {
       console.error("Erro ao buscar dados da música:", error);
@@ -88,5 +88,3 @@ const UpdateForm = ({ songId, onCancel }) => {
 };
 
 export default UpdateForm;
-
- 

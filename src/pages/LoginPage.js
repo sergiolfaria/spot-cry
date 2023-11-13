@@ -1,23 +1,23 @@
-import { useNavigate } from "react-router-dom";
-import { goToHomePage } from "../routes/Coordinator";
+import React from "react";
 import { ImageContainer, LoginContainer } from "./Styles/Styles";
 import { LoginForm } from "../components/LoginForm/LoginForm";
+import { useNavigate } from "react-router-dom";
+import { goToHomePage } from "../routes/Coordinator";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const goHome = () => {
+  const navigateToHome = () => {
     goToHomePage(navigate);
   };
 
   return (
-    <LoginContainer>
-      <ImageContainer />
-      <LoginForm>
-        <h1>Login</h1>
-        <p>login página</p>
-        <button onClick={goHome}>Home</button>
-      </LoginForm>
-    </LoginContainer>
+    <div>
+      <button onClick={navigateToHome}>Home</button>
+      <LoginContainer>
+        <ImageContainer />
+        <LoginForm />
+      </LoginContainer>
+    </div>
   );
 };

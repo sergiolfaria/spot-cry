@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import {postSongsToData}  from '../../services/addNewSong';
+import { postSongsToData } from '../../services/addNewSong';
+import {
+  Container,
+  Title,
+  Form,
+  Label,
+  Input,
+  Button,
+  ToggleButton,
+} from '../PostSongs/Style';
 
 const SongForm = () => {
   const [songData, setSongData] = useState({
     title: '',
     artist: '',
-    url: ''
+    url: '',
   });
+  const [expanded, setExpanded] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,7 +26,7 @@ const SongForm = () => {
       setSongData({
         title: '',
         artist: '',
-        url: ''
+        url: '',
       });
 
       alert('Música postada com sucesso!');
@@ -34,44 +44,51 @@ const SongForm = () => {
     });
   };
 
+  const handleToggle = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <div>
-      <h2>Postar Nova Música</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Título:
-          <input
-            type="text"
-            name="title"
-            value={songData.title}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Artista:
-          <input
-            type="text"
-            name="artist"
-            value={songData.artist}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        
-        <label>
-          URL:
-          <input
-            type="text"
-            name="url"
-            value={songData.url}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Postar Música</button>
-      </form>
-    </div>
+    <Container>
+      <ToggleButton onClick={handleToggle}>
+        {expanded ? 'Esconder Formulário' : 'Adicionar Música'}
+      </ToggleButton>
+      {expanded && (
+        <Form onSubmit={handleSubmit}>
+          <Label>
+            Título:
+            <Input
+              type="text"
+              name="title"
+              value={songData.title}
+              onChange={handleChange}
+              expanded={expanded}
+            />
+          </Label>
+          <Label>
+            Artista:
+            <Input
+              type="text"
+              name="artist"
+              value={songData.artist}
+              onChange={handleChange}
+              expanded={expanded}
+            />
+          </Label>
+          <Label>
+            URL:
+            <Input
+              type="text"
+              name="url"
+              value={songData.url}
+              onChange={handleChange}
+              expanded={expanded}
+            />
+          </Label>
+          <Button type="submit">Postar Música</Button>
+        </Form>
+      )}
+    </Container>
   );
 };
 
