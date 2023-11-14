@@ -3,12 +3,12 @@ import { COLORS } from "../../constants/colors";
 
 export const FeedContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   font-family: "Roboto", sans-serif;
   color: ${COLORS.darkGray};
 `;
 
 export const PlaylistContainer = styled.div`
-  position: fixed;
   width: 25%;
   padding: 20px;
   background-color: ${COLORS.lightGray};
@@ -22,7 +22,7 @@ export const SongsContainer = styled.div`
   width: 50%;
   padding: 20px;
   overflow-y: auto;
-  margin-left: 20%;
+  
 `;
 
 export const SongContainer = styled.div`
@@ -77,8 +77,7 @@ export const AddSongContainer = styled.div`
   padding: 20px;
   background-color: ${COLORS.lightGray};
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  
 `;
 
 export const Title = styled.h1`

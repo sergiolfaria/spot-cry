@@ -3,10 +3,12 @@ import Router from "./routes/Router";
 import GlobalStyle from "./styles/Styles";
 
 
+
 function App() {
   return (
     <>
       <GlobalStyle />
+      
       <BrowserRouter basename="/spoticry-front">
         <Router />
       </BrowserRouter>
