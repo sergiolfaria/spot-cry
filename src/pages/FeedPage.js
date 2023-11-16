@@ -3,22 +3,16 @@ import { getPlaylistsFromUser } from '../services/playlist';
 import { getMusicsFromData } from '../services/getMusicData';
 import SongForm from '../components/PostSongs/FormPostSongs';
 import { deleteMusicsFromData } from '../services/deleteSong';
-import UpdateForm from '../components/UpdateSongs/UpdateForm';
 import Loading from '../components/Loading/Loading';
+import SongItem from '../components/Song/SongItem';
 import {
-  FeedPageContainer,
   FeedContainer,
   PlaylistContainer,
   SongsContainer,
   Title,
   List,
   ListItem,
-  SongButtons,
   AddSongContainer,
-  SongContainer,
-  SongInfo,
-  SongTitle,
-  SongArtist,
 } from './Styles/FeedStyles';
 
 function FeedPage() {
@@ -67,7 +61,6 @@ function FeedPage() {
   }
 
   return (
-    <FeedPageContainer>
       <FeedContainer>
         <PlaylistContainer>
           <Title>My Playlist</Title>
@@ -80,35 +73,27 @@ function FeedPage() {
         </PlaylistContainer>
 
         <SongsContainer>
-          <Title>All Songs</Title>
-          <List>
-            {Array.isArray(songs) &&
-              songs.map((song, index) => (
-                <SongContainer key={song.id}>
-                  <SongInfo>
-                    <SongTitle>{index + 1} {song.title}</SongTitle>
-                    <SongArtist>{song.artist}</SongArtist>
-                  </SongInfo>
-                  <SongButtons>
-                    <button className="delete" onClick={() => handleDelete(song.id)}>Excluir</button>
-                    <button className="edit" onClick={() => handleEdit(song.id)}>Editar</button>
-                  </SongButtons>
-                  {editingSongId === song.id && (
-                    <UpdateForm
-                      songId={song.id}
-                      onCancel={() => setEditingSongId(null)}
-                    />
-                  )}
-                </SongContainer>
-              ))}
-          </List>
-        </SongsContainer>
+        <Title>All Songs</Title>
+        <List>
+          {Array.isArray(songs) &&
+            songs.map((song, index) => (
+              <SongItem
+                key={song.id}
+                song={song}
+                index={index}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+                editingSongId={editingSongId}
+                setEditingSongId={setEditingSongId}
+              />
+            ))}
+        </List>
+      </SongsContainer>
 
         <AddSongContainer>
           <SongForm />
         </AddSongContainer>
       </FeedContainer>
-    </FeedPageContainer>
   );
 }
 

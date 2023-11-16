@@ -50,7 +50,6 @@ const UpdateForm = ({ songId, onCancel }) => {
 
   return (
     <div>
-      <h2>Atualizar Música</h2>
       <label>
         Título:
         <input

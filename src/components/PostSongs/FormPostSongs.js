@@ -30,6 +30,7 @@ const SongForm = () => {
       });
 
       alert('Música postada com sucesso!');
+      
     } catch (error) {
       console.error('Erro ao postar a música:', error);
       alert('Erro ao postar a música. Por favor, tente novamente.');
@@ -50,39 +51,39 @@ const SongForm = () => {
 
   return (
     <Container>
-      <ToggleButton onClick={handleToggle}>
-        {expanded ? 'Esconder Formulário' : 'Adicionar Música'}
-      </ToggleButton>
+      <Button onClick={handleToggle}>
+        {expanded ? 'Cancelar' : 'Adicionar Música'}
+      </Button>
       {expanded && (
         <Form onSubmit={handleSubmit}>
           <Label>
-            Título:
             <Input
               type="text"
               name="title"
               value={songData.title}
               onChange={handleChange}
               expanded={expanded}
+              placeholder='Título'
             />
           </Label>
           <Label>
-            Artista:
             <Input
               type="text"
               name="artist"
               value={songData.artist}
               onChange={handleChange}
               expanded={expanded}
+              placeholder='Artista'
             />
           </Label>
           <Label>
-            URL:
             <Input
               type="text"
               name="url"
               value={songData.url}
               onChange={handleChange}
               expanded={expanded}
+              placeholder='URL'
             />
           </Label>
           <Button type="submit">Postar Música</Button>

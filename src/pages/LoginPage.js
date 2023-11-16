@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageContainer, LoginContainer } from "./Styles/Styles";
+import { ImageContainer, LoginContainer } from "./Styles/LoginStyles";
 import { LoginForm } from "../components/LoginForm/LoginForm";
 import { useNavigate } from "react-router-dom";
 import { goToHomePage } from "../routes/Coordinator";

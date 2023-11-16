@@ -6,18 +6,15 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 40vw;
-  background-color: ${COLORS.white};
-  padding-top: 4rem;
-  margin-top: 2rem;
+  background-color: ${COLORS.darkGray};
+  border-radius: 8px;
 `;
 
 export const Title = styled.h2`
   font-family: "Playfair Display";
   font-weight: 400;
   font-size: 30px;
-  color: ${COLORS.indigo};
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+  color: ${COLORS.white};
 `;
 
 export const Form = styled.form`
@@ -25,6 +22,7 @@ export const Form = styled.form`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  color: ${COLORS.white};
 `;
 
 export const Label = styled.label`
@@ -48,7 +46,7 @@ export const Button = styled.button`
   height: 2.5rem;
   border: none;
   border-radius: 5px;
-  background-color: ${COLORS.indigo};
+  background-color: ${COLORS.blue};
   color: ${COLORS.white};
   font-size: 16px;
   font-family: "Roboto";

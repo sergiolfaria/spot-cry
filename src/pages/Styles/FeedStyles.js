@@ -3,73 +3,30 @@ import { COLORS } from "../../constants/colors";
 
 export const FeedContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   font-family: "Roboto", sans-serif;
   color: ${COLORS.darkGray};
+  background-color: ${COLORS.black};
 `;
 
 export const PlaylistContainer = styled.div`
   width: 25%;
   padding: 20px;
-  background-color: ${COLORS.lightGray};
+  background-color: ${COLORS.darkGray};
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: start;
+  border-radius: 8px;
+  margin: 10px 10px 10px 10px;
 `;
 
 export const SongsContainer = styled.div`
   width: 50%;
   padding: 20px;
   overflow-y: auto;
-  
-`;
-
-export const SongContainer = styled.div`
-  background-color: ${COLORS.lighterGray};
+  background-color: ${COLORS.darkGray};
   border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const SongInfo = styled.div`
-  flex-grow: 1;
-  margin-right: 16px;
-`;
-
-export const SongTitle = styled.h3`
-  font-size: 18px;
-  color: ${COLORS.indigo};
-  margin-bottom: 8px;
-`;
-
-export const SongArtist = styled.p`
-  font-size: 14px;
-  color: ${COLORS.darkGray};
-`;
-
-export const SongButtons = styled.div`
-  display: flex;
-  align-items: center;
-  button {
-    margin-right: 8px;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .delete {
-    background-color: red;
-    color: ${COLORS.white};
-  }
-  .edit {
-    background-color: ${COLORS.darkYellow};
-    color: ${COLORS.white};
-  }
+  margin: 10px 10px 10px 10px;
 `;
 
 export const AddSongContainer = styled.div`
@@ -82,7 +39,7 @@ export const AddSongContainer = styled.div`
 
 export const Title = styled.h1`
   font-size: 24px;
-  color: ${COLORS.indigo};
+  color: ${COLORS.blue};
   margin-bottom: 10px;
 `;
 
@@ -96,6 +53,7 @@ export const ListItem = styled.li`
   margin-bottom: 10px;
 `;
 
-export const FeedPageContainer = styled.div`
-
+export const HeaderList = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
