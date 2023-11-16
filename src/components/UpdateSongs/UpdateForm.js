@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { updateMusicsFromData } from "../../services/updateMusica";
 import { getMusicsFromData } from "../../services/getMusicData";
 
-const UpdateForm = ({ songId, onCancel }) => {
+const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
   const [updatedData, setUpdatedData] = useState({
     title: "",
     artist: "",
@@ -33,6 +33,12 @@ const UpdateForm = ({ songId, onCancel }) => {
       await updateMusicsFromData(songId, updatedData);
       setUpdatedData({ title: "", artist: "", url: "" });
       onCancel();
+
+      // Call the callback function if provided
+      if (onUpdateSuccess) {
+        onUpdateSuccess();
+      }
+
       alert("Música atualizada com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar a música:", error);

@@ -40,6 +40,9 @@ function FeedPage() {
       setLoading(false);
     }
   };
+  const onSubmitSuccess = () => {
+    fetchData();
+  };
 
   const handleDelete = async (songId) => {
     try {
@@ -91,7 +94,7 @@ function FeedPage() {
       </SongsContainer>
 
         <AddSongContainer>
-          <SongForm />
+          <SongForm onSubmitSuccess={onSubmitSuccess}/>
         </AddSongContainer>
       </FeedContainer>
   );

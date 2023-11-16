@@ -10,7 +10,7 @@ import {
   ToggleButton,
 } from '../PostSongs/Style';
 
-const SongForm = () => {
+const SongForm = ({ onSubmitSuccess }) => {
   const [songData, setSongData] = useState({
     title: '',
     artist: '',
@@ -30,7 +30,11 @@ const SongForm = () => {
       });
 
       alert('Música postada com sucesso!');
-      
+
+      // Chama a função de callback se fornecida
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
     } catch (error) {
       console.error('Erro ao postar a música:', error);
       alert('Erro ao postar a música. Por favor, tente novamente.');
