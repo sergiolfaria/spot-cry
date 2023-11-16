@@ -3,7 +3,6 @@ import { getPlaylistsFromUser } from '../services/playlist';
 import { getMusicsFromData } from '../services/getMusicData';
 import SongForm from '../components/PostSongs/FormPostSongs';
 import { deleteMusicsFromData } from '../services/deleteSong';
-import Loading from '../components/Loading/Loading';
 import SongItem from '../components/Song/SongItem';
 import {
   FeedContainer,
@@ -19,7 +18,6 @@ function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setsongs] = useState([]);
   const [editingSongId, setEditingSongId] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -27,7 +25,6 @@ function FeedPage() {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
 
       const playlistsResponse = await getPlaylistsFromUser();
       setPlaylists(playlistsResponse.data.playlists);
@@ -36,9 +33,7 @@ function FeedPage() {
       setsongs(songsResponse.data.songs);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
   const onSubmitSuccess = () => {
     fetchData();
@@ -58,10 +53,6 @@ function FeedPage() {
   const handleEdit = (songId) => {
     setEditingSongId(songId);
   };
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
       <FeedContainer>

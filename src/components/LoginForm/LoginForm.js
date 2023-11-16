@@ -5,17 +5,23 @@ import useForm from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 import SimpleText from "../SimpleText/SimpleText";
 import { login } from "../../services/users";
+import Loading from "../Loading/Loading";
 
 export const LoginForm = () => {
   const [form, onChange, clear] = useForm({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onSubmitLogin = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true);
       await login(form, navigate);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -35,6 +41,8 @@ export const LoginForm = () => {
           <StyledInput type="password" name="password" onChange={onChange} required={true} value={form.password} />
         </div>
         <StyledButton type={"submit"} value={"Entrar"} onClick={onSubmitLogin} />
+        <Loading/>
+        {loading && <Loading/>}
       </StyledForm>
     </FormContainer>
   );

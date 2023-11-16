@@ -3,13 +3,15 @@ import { COLORS } from "../../constants/colors";
 
 export const FeedContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   font-family: "Roboto", sans-serif;
   color: ${COLORS.darkGray};
   background-color: ${COLORS.black};
 `;
 
 export const PlaylistContainer = styled.div`
-  width: 25%;
+  position: fixed;
+  width: 15%;
   padding: 20px;
   background-color: ${COLORS.darkGray};
   height: 100vh;
@@ -17,7 +19,7 @@ export const PlaylistContainer = styled.div`
   flex-direction: column;
   justify-content: start;
   border-radius: 8px;
-  margin: 10px 10px 10px 10px;
+  margin: 1px 10px 10px 18px;
 `;
 
 export const SongsContainer = styled.div`
@@ -26,7 +28,7 @@ export const SongsContainer = styled.div`
   overflow-y: auto;
   background-color: ${COLORS.darkGray};
   border-radius: 8px;
-  margin: 10px 10px 10px 10px;
+  margin: 10px 10px 10px 18%;
 `;
 
 export const AddSongContainer = styled.div`
@@ -47,6 +49,7 @@ export const List = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
+  color: ${COLORS.white}
 `;
 
 export const ListItem = styled.li`
