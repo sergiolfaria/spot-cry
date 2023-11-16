@@ -41,7 +41,6 @@ export const LoginForm = () => {
           <StyledInput type="password" name="password" onChange={onChange} required={true} value={form.password} />
         </div>
         <StyledButton type={"submit"} value={"Entrar"} onClick={onSubmitLogin} />
-        <Loading/>
         {loading && <Loading/>}
       </StyledForm>
     </FormContainer>
