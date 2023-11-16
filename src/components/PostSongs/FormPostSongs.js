@@ -67,6 +67,7 @@ const SongForm = ({ onSubmitSuccess }) => {
               value={songData.title}
               onChange={handleChange}
               expanded={expanded}
+              required
               placeholder='Título'
             />
           </Label>
@@ -77,16 +78,18 @@ const SongForm = ({ onSubmitSuccess }) => {
               value={songData.artist}
               onChange={handleChange}
               expanded={expanded}
+              required
               placeholder='Artista'
             />
           </Label>
           <Label>
             <Input
-              type="text"
+              type="url"
               name="url"
               value={songData.url}
               onChange={handleChange}
               expanded={expanded}
+              required
               placeholder='URL'
             />
           </Label>
