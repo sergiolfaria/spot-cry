@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import loginBackground from "../../assets/loginBackground.png";
+import loginBackground from "../../assets/loginBackground.jpg";
 import { COLORS } from "../../constants/colors";
 
 export const ImageContainer = styled.div`
@@ -12,7 +12,7 @@ export const ImageContainer = styled.div`
 `;
 
 export const LoginImageContainer = styled.div`
-  width: 50%;
+  width: 40%;
   height: 100vh;
   background-image: url(${loginBackground});
   background-size: cover;
