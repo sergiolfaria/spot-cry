@@ -9,6 +9,7 @@ import {
   Button,
   ToggleButton,
 } from '../PostSongs/Style';
+import { CenteredContainer, FormField, FormGroup, FormLabel, UpdateFormContainer } from '../UpdateSongs/Style';
 
 const SongForm = ({ onSubmitSuccess }) => {
   const [songData, setSongData] = useState({
@@ -54,48 +55,62 @@ const SongForm = ({ onSubmitSuccess }) => {
   };
 
   return (
+
     <Container>
       <Button onClick={handleToggle}>
         {expanded ? 'Cancelar' : 'Adicionar Música'}
       </Button>
-      {expanded && (
-        <Form onSubmit={handleSubmit}>
-          <Label>
-            <Input
-              type="text"
-              name="title"
-              value={songData.title}
-              onChange={handleChange}
-              expanded={expanded}
-              required
-              placeholder='Título'
-            />
-          </Label>
-          <Label>
-            <Input
-              type="text"
-              name="artist"
-              value={songData.artist}
-              onChange={handleChange}
-              expanded={expanded}
-              required
-              placeholder='Artista'
-            />
-          </Label>
-          <Label>
-            <Input
-              type="url"
-              name="url"
-              value={songData.url}
-              onChange={handleChange}
-              expanded={expanded}
-              required
-              placeholder='URL'
-            />
-          </Label>
-          <Button type="submit">Postar Música</Button>
-        </Form>
-      )}
+          {expanded && (
+      <UpdateFormContainer>
+        <CenteredContainer>
+            <Form onSubmit={handleSubmit}>
+              <FormGroup className="form__group field">
+                <FormField
+                  type="text"
+                  name="title"
+                  value={songData.title}
+                  onChange={handleChange}
+                  expanded={expanded}
+                  required
+                  placeholder="Título"
+                />
+                <FormLabel htmlFor="title" className="form__label">
+                  Título
+                </FormLabel>
+              </FormGroup>
+              <FormGroup className="form__group field">
+                <FormField
+                  type="text"
+                  name="artist"
+                  value={songData.artist}
+                  onChange={handleChange}
+                  expanded={expanded}
+                  required
+                  placeholder="Artista"
+                />
+                <FormLabel htmlFor="artist" className="form__label">
+                  Artista
+                </FormLabel>
+              </FormGroup>
+              <FormGroup className="form__group field">
+                <FormField
+                  type="url"
+                  name="url"
+                  value={songData.url}
+                  onChange={handleChange}
+                  expanded={expanded}
+                  required
+                  placeholder="URL"
+                />
+                <FormLabel htmlFor="url" className="form__label">
+                  URL
+                </FormLabel>
+              </FormGroup>
+              <Button type="submit">Postar Música</Button>
+            </Form>
+        </CenteredContainer>
+      </UpdateFormContainer>
+          )}
     </Container>
   );
 };

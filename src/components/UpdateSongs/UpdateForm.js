@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { updateMusicsFromData } from "../../services/updateMusica";
 import { getMusicsFromData } from "../../services/getMusicData";
+import { CenteredContainer, FormField, FormGroup, FormLabel, Styledbutton, UpdateFormContainer } from "./Style";
+
 
 const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
   const [updatedData, setUpdatedData] = useState({
     title: "",
     artist: "",
-    url: "",
+    
   });
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
       setUpdatedData({
         title: songData.title || "",
         artist: songData.artist || "",
-        url: songData.url || "",
+    
       });
     } catch (error) {
       console.error("Erro ao buscar dados da música:", error);
@@ -31,10 +33,8 @@ const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
   const handleUpdate = async () => {
     try {
       await updateMusicsFromData(songId, updatedData);
-      setUpdatedData({ title: "", artist: "", url: "" });
+      setUpdatedData({ title: "", artist: "" });
       onCancel();
-
-      // Call the callback function if provided
       if (onUpdateSuccess) {
         onUpdateSuccess();
       }
@@ -55,40 +55,42 @@ const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
   };
 
   return (
-    <div>
-      <label>
-        Título:
-        <input
-          type="text"
-          name="title"
-          value={updatedData.title}
-          onChange={handleChange}
-        />
-      </label>
+    <CenteredContainer>
+      <UpdateFormContainer>
+
+        <FormGroup className="form__group field">
+          <FormField
+            type="text"
+            name="title"
+            required
+            value={updatedData.title}
+            onChange={handleChange}
+          />
+          <FormLabel htmlFor="name" className="form__label">
+            Titulo:
+          </FormLabel>
+        </FormGroup>
+        <FormGroup className="form__group field">
+
+          <FormField
+            type="text"
+            name="artist"
+            required
+            value={updatedData.artist}
+            onChange={handleChange}
+          />
+          <FormLabel htmlFor="name" className="form__label"> 
+            Artista:
+          </FormLabel>
+        </FormGroup>
+        <FormGroup className="form__group field">
+       
+      </FormGroup>
       <br />
-      <label>
-        Artista:
-        <input
-          type="text"
-          name="artist"
-          value={updatedData.artist}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label>
-        URL:
-        <input
-          type="text"
-          name="url"
-          value={updatedData.url}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <button onClick={handleUpdate}>Atualizar Música</button>
-      <button onClick={onCancel}>Cancelar</button>
-    </div>
+      <Styledbutton onClick={handleUpdate}>Atualizar Música</Styledbutton>
+      <Styledbutton onClick={onCancel}>Cancelar</Styledbutton>
+    </UpdateFormContainer>
+    </CenteredContainer >
   );
 };
 

@@ -13,6 +13,7 @@ import {
   ListItem,
   AddSongContainer,
 } from './Styles/FeedStyles';
+import { CenteredContainer, UpdateFormContainer } from '../components/UpdateSongs/Style';
 
 function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
@@ -33,7 +34,7 @@ function FeedPage() {
       setsongs(songsResponse.data.songs);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
-    } 
+    }
   };
   const onSubmitSuccess = () => {
     fetchData();
@@ -55,19 +56,22 @@ function FeedPage() {
   };
 
   return (
-      <FeedContainer>
-        <PlaylistContainer>
-          <Title>My Playlist</Title>
-          <List>
-            {Array.isArray(playlists) &&
-              playlists.map((playlist, index) => (
-                <ListItem key={playlist._id}>{index + 1} {playlist._name} </ListItem>
-              ))}
-          </List>
-        </PlaylistContainer>
+    <FeedContainer>
+      <PlaylistContainer>
+        <Title>My Playlist</Title>
+        <List>
+          {Array.isArray(playlists) &&
+            playlists.map((playlist, index) => (
+              <ListItem key={playlist._id}>{index + 1} {playlist._name} </ListItem>
+            ))}
+        </List>
+      </PlaylistContainer>
 
-        <SongsContainer>
+      <SongsContainer>
         <Title>All Songs</Title>
+            <SongForm onSubmitSuccess={onSubmitSuccess} />
+       
+      
         <List>
           {Array.isArray(songs) &&
             songs.map((song, index) => (
@@ -84,10 +88,9 @@ function FeedPage() {
         </List>
       </SongsContainer>
 
-        <AddSongContainer>
-          <SongForm onSubmitSuccess={onSubmitSuccess}/>
-        </AddSongContainer>
-      </FeedContainer>
+      <AddSongContainer>
+      </AddSongContainer>
+    </FeedContainer>
   );
 }
 

@@ -2,41 +2,39 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { COLORS } from '../../constants/colors';
 
 const OptionsButtonContainer = styled.div`
-  position: relative;
-  display: inline-block;
+      position: relative;
+      
 `;
 
 const OptionsButtonIcon = styled(FontAwesomeIcon)`
-  color: #ffffff;
-  background: none;
-  border: none;
-  cursor: pointer;
+   cursor: pointer;
 `;
 
 const OptionsList = styled.div`
-  display: ${(props) => (props.show ? 'block' : 'none')};
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 0;
+  left:   -72px; 
+  display: ${(props) => (props.show ? 'flex' : 'none')};
+  flex-direction: column;
   background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  
+  
   z-index: 1;
+ 
+`;
 
-  button {
-    width: 100%;
-    padding: 10px;
-    text-align: left;
-    border: none;
-    background: none;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #f1f1f1;
-    }
+ const OptionItem = styled.button`
+  padding: 8px;
+  cursor: pointer;
+  border:none;
+  width:100%;
+  background-color:white;
+  &:hover {
+    background-color:  ${COLORS.blue};
   }
 `;
 
@@ -51,8 +49,8 @@ const OptionsButton = ({ onOptionClick }) => {
     <OptionsButtonContainer>
       <OptionsButtonIcon icon={faEllipsis} onClick={toggleOptions} />
       <OptionsList show={showOptions}>
-        <button onClick={() => onOptionClick('edit')}>Editar</button>
-        <button onClick={() => onOptionClick('delete')}>Excluir</button>
+        <OptionItem onClick={() => onOptionClick('edit')}>Editar</OptionItem>
+        <OptionItem onClick={() => onOptionClick('delete')}>Excluir</OptionItem>
       </OptionsList>
     </OptionsButtonContainer>
   );
