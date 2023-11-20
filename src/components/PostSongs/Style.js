@@ -5,8 +5,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
- 
-  
   border-radius: 8px;
 `;
 

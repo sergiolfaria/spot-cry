@@ -8,6 +8,12 @@ export const FeedContainer = styled.div`
   color: ${COLORS.darkGray};
   background-color: ${COLORS.black};
 `;
+export const SongFormContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+`
 
 export const PlaylistContainer = styled.div`
   position: fixed;

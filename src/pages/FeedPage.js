@@ -12,6 +12,7 @@ import {
   List,
   ListItem,
   AddSongContainer,
+  SongFormContainer,
 } from './Styles/FeedStyles';
 import { CenteredContainer, UpdateFormContainer } from '../components/UpdateSongs/Style';
 
@@ -68,8 +69,11 @@ function FeedPage() {
       </PlaylistContainer>
 
       <SongsContainer>
+        <SongFormContainer>
+
         <Title>All Songs</Title>
             <SongForm onSubmitSuccess={onSubmitSuccess} />
+        </SongFormContainer>
        
       
         <List>

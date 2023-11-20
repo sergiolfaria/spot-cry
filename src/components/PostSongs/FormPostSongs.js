@@ -61,8 +61,7 @@ const SongForm = ({ onSubmitSuccess }) => {
         {expanded ? 'Cancelar' : 'Adicionar Música'}
       </Button>
           {expanded && (
-      <UpdateFormContainer>
-        <CenteredContainer>
+    
             <Form onSubmit={handleSubmit}>
               <FormGroup className="form__group field">
                 <FormField
@@ -108,8 +107,7 @@ const SongForm = ({ onSubmitSuccess }) => {
               </FormGroup>
               <Button type="submit">Postar Música</Button>
             </Form>
-        </CenteredContainer>
-      </UpdateFormContainer>
+     
           )}
     </Container>
   );
