@@ -66,7 +66,6 @@ function FeedPage() {
   };
 
   const handleCreatePlaylist = () => {
-    // Implemente a lógica para criar uma nova playlist aqui
     alert('Lógica de criação de playlist aqui');
   };
 
@@ -92,7 +91,9 @@ function FeedPage() {
         <SongForm onSubmitSuccess={onSubmitSuccess} />
       </HeaderList>
       <SongsContainer>
-
+      {loading ? (
+          <FeedLoading />
+        ) : (
         <List>
           {Array.isArray(songs) &&
             songs.map((song, index) => (
@@ -107,8 +108,8 @@ function FeedPage() {
               />
             ))}
         </List>
+        )}
       </SongsContainer>
-
       <AddSongContainer>
       </AddSongContainer>
       <Player />

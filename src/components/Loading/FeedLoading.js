@@ -3,13 +3,13 @@ import styled, { keyframes } from 'styled-components';
 
 const pulse = keyframes`
   0% {
-    opacity: 1;
+    opacity: 0.1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.05;
   }
   100% {
-    opacity: 1;
+    opacity: 0.1;
   }
 `;
 
@@ -21,10 +21,10 @@ const LoadingContainer = styled.div`
 `;
 
 const PulseLoader = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   background-color: white;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   animation: ${pulse} 1.5s infinite;
 `;
 

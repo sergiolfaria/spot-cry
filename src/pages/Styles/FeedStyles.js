@@ -25,7 +25,7 @@ export const PlaylistContainer = styled.div`
   flex-direction: column;
   justify-content: start;
   border-radius: 8px;
-  margin: 1px 10px 10px 18px;
+  margin: 1px 10px 0px 18px;
   overflow-y: auto;
 `;
 
@@ -91,7 +91,7 @@ export const HeaderList = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 8px 8px 0px 0px;
-  z-index: 1;
+  z-index: 0;
 
   /* Estilização da barra de rolagem para navegadores WebKit (Chrome, Safari) */
   &::-webkit-scrollbar {
