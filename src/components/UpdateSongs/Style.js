@@ -15,8 +15,8 @@ export const CenteredContainer = styled.div`
 `;
 
 export const UpdateFormContainer = styled.div`
-  width: 30%;
-    height: 30%;
+    width: 35%;
+    height: 50%;
     background-color: #ffffff;
     display: flex;
     color:black;
@@ -25,9 +25,8 @@ export const UpdateFormContainer = styled.div`
     border-radius: 8px;
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    
 `;
-
-
 
 
 export const FormGroup = styled.div`
@@ -102,16 +101,18 @@ export const DemoContainer = styled.body`
   background-color: #222222;
 `;
 
-export const Styledbutton = styled.button`
-    padding: 8px;
-    cursor: pointer;
-    border:none;
-    width:50%;
-    border-radius:5px;
-    background-color:white;
-    &:hover {
-        background-color:  ${COLORS.blue};
-    }
-
-
-`
+export const StyledButton = styled.button`
+  padding: 8px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  width: 50%;
+  background-color: ${(props) =>
+    props.isCancel ? COLORS.white : COLORS.white};
+  
+  &:hover {
+    background-color: ${(props) =>
+      props.isCancel ? COLORS.red : COLORS.blue};
+    color: ${(props) => (props.isCancel ? COLORS.white : "inherit")};
+  }
+`;

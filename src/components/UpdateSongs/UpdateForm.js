@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { updateMusicsFromData } from "../../services/updateMusica";
 import { getMusicsFromData } from "../../services/getMusicData";
-import { CenteredContainer, FormField, FormGroup, FormLabel, Styledbutton, UpdateFormContainer } from "./Style";
+import {
+  CenteredContainer, FormField, FormGroup, FormLabel, StyledButton
+  , UpdateFormContainer
+} from "./Style";
 
 
 const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
   const [updatedData, setUpdatedData] = useState({
     title: "",
     artist: "",
-    
+
   });
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
       setUpdatedData({
         title: songData.title || "",
         artist: songData.artist || "",
-    
+
       });
     } catch (error) {
       console.error("Erro ao buscar dados da música:", error);
@@ -79,17 +82,17 @@ const UpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
             value={updatedData.artist}
             onChange={handleChange}
           />
-          <FormLabel htmlFor="name" className="form__label"> 
+          <FormLabel htmlFor="name" className="form__label">
             Artista:
           </FormLabel>
         </FormGroup>
         <FormGroup className="form__group field">
-       
-      </FormGroup>
-      <br />
-      <Styledbutton onClick={handleUpdate}>Atualizar Música</Styledbutton>
-      <Styledbutton onClick={onCancel}>Cancelar</Styledbutton>
-    </UpdateFormContainer>
+
+        </FormGroup>
+        <br />
+        <StyledButton isCancel={true} onClick={onCancel}>Cancelar</StyledButton>
+        <StyledButton onClick={handleUpdate}>Atualizar Música</StyledButton>
+      </UpdateFormContainer>
     </CenteredContainer >
   );
 };

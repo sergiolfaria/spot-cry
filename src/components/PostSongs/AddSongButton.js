@@ -1,10 +1,10 @@
 import React from 'react';
 import { ToggleButton } from './Style';
 
-const PostButton = ({ expanded, onClick }) => {
+const PostButton = ({ onClick }) => {
   return (
     <ToggleButton onClick={onClick}>
-      {expanded ? 'Esconder Formulário' : 'Adicionar Música'}
+      Adicionar Música
     </ToggleButton>
   );
 };

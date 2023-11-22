@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { postSongsToData } from '../../services/addNewSong';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
   Container,
   Title,
@@ -8,10 +10,10 @@ import {
   Input,
   Button,
   ToggleButton,
+  CenteredContainer, FormField, FormGroup, FormLabel, PostFormContainer, Buttons, StyledButton
 } from '../PostSongs/Style';
-import { CenteredContainer, FormField, FormGroup, FormLabel, UpdateFormContainer } from '../UpdateSongs/Style';
 
-const SongForm = ({ onSubmitSuccess }) => {
+const SongForm = ({ onSubmitSuccess, onCancel }) => {
   const [songData, setSongData] = useState({
     title: '',
     artist: '',
@@ -32,7 +34,6 @@ const SongForm = ({ onSubmitSuccess }) => {
 
       alert('Música postada com sucesso!');
 
-      // Chama a função de callback se fornecida
       if (onSubmitSuccess) {
         onSubmitSuccess();
       }
@@ -49,19 +50,29 @@ const SongForm = ({ onSubmitSuccess }) => {
       [name]: value,
     });
   };
+  const handleCancel = () => {
+    setSongData({
+      title: '',
+      artist: '',
+      url: '',
+    });
+    setExpanded(false);
+  };
 
   const handleToggle = () => {
-    setExpanded(!expanded);
+    setExpanded(true);
   };
 
   return (
 
     <Container>
       <Button onClick={handleToggle}>
-        {expanded ? 'Cancelar' : 'Adicionar Música'}
-      </Button>
-          {expanded && (
-    
+  <FontAwesomeIcon icon={faPlus} style={{ fontSize: '1.2em' }} />
+  <span>Adicionar Música</span>
+</Button>
+      {expanded && (
+        <PostFormContainer>
+          <CenteredContainer>
             <Form onSubmit={handleSubmit}>
               <FormGroup className="form__group field">
                 <FormField
@@ -105,10 +116,14 @@ const SongForm = ({ onSubmitSuccess }) => {
                   URL
                 </FormLabel>
               </FormGroup>
-              <Button type="submit">Postar Música</Button>
+
+              <StyledButton isCancel={true} onClick={handleCancel}>Cancelar</StyledButton>
+              <StyledButton type="submit">Postar Música</StyledButton>
+
             </Form>
-     
-          )}
+          </CenteredContainer>
+        </PostFormContainer>
+      )}
     </Container>
   );
 };

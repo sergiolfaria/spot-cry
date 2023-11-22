@@ -5,6 +5,13 @@ export const SongItemContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  padding-right: 20px;
+  border-radius: 8px;
+  &:hover {
+    background-color: ${COLORS.gray};
+    color: ${COLORS.white};
+  }
 `;
 
 export const SongDetails = styled.div`
@@ -16,7 +23,6 @@ export const SongDetails = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
-  background-color: ${COLORS.lighterGray};
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
@@ -36,6 +42,7 @@ export const SongArtist = styled.p`
 export const SongActionButtons = styled.div`
   display: flex;
   align-items: center;
+  
 
   button {
     margin-right: 8px;
