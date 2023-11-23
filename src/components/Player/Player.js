@@ -74,48 +74,56 @@ const PlayerStatus = styled.div`
   align-items: center;
 `;
 
-const Player = () => {
+// Exemplo de uso:
+
+
+const Player = ({ currentSong }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [thumbnail, setThumbnail] = useState('');
   const [progress, setProgress] = useState(0);
   const playerRef = useRef(null);
 
+  useEffect(() => {
+    // Pausa o vídeo quando a música é alterada
+    if (playerRef.current) {
+      playerRef.current.pauseVideo();
+      setIsPlaying(false);
+    }
+  }, [currentSong]);
+
+  if (!currentSong || !currentSong.url) {
+    // Renderiza algo quando não há uma música válida
+    return null;
+  }
+
+  const extractYouTubeVideoId = (url) => {
+    if (typeof url !== 'string') {
+      return null;
+    }
+
+    const urlPattern = /^https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(urlPattern);
+    if (match && match[1]) {
+      return match[1];
+    } else {
+      return null;
+    }
+  };
+
+  const videoIdextracted = extractYouTubeVideoId(currentSong.url);
   const opts = {
     height: '0',
     width: '0',
   };
 
-  useEffect(() => {
-    // Atualizar a miniatura usando a API do YouTube Data
-    const fetchThumbnail = async () => {
-      const videoId = 'E0ozmU9cJDg'; // Substitua pelo ID do seu vídeo
-      const apiKey = 'AIzaSyDgJOkFh7VkgB517gj7-KuCSIRbu5_Ce84'; // Substitua pela sua chave da API do YouTube
-
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`
-        );
-        const data = await response.json();
-        const thumbnailUrl = data.items[0]?.snippet?.thumbnails?.default?.url;
-        setThumbnail(thumbnailUrl);
-      } catch (error) {
-        console.error('Erro ao buscar a miniatura do vídeo:', error);
-      }
-    };
-
-    fetchThumbnail();
-  }, []);
-
   const onReady = (event) => {
     playerRef.current = event.target;
 
-    // Set up a listener to update the progress bar
     setInterval(() => {
       const currentTime = playerRef.current.getCurrentTime();
       const duration = playerRef.current.getDuration();
       const calculatedProgress = (currentTime / duration) * 100;
       setProgress(calculatedProgress);
-    }, 1000); // Update every second
+    }, 1000);
   };
 
   const onPlayPauseClick = () => {
@@ -130,17 +138,19 @@ const Player = () => {
   return (
     <PlayerContainer>
       <YouTube
-        videoId="E0ozmU9cJDg"
+        videoId={videoIdextracted}
         opts={opts}
         containerClassName="audio-container"
         onReady={onReady}
       />
 
       <NowPlaying>
-        <img src={'https://i.ytimg.com/vi/E0ozmU9cJDg/default.jpg'} alt="Video Thumbnail" width="40" height="40" />
+        {currentSong.thumbnail && (
+          <img src={currentSong.thumbnail} alt="Video Thumbnail" width="110" height="100" />
+        )}
         <SongInfo>
-          <SongTitle>Song Title</SongTitle>
-          <SongArtist>Artist Name</SongArtist>
+          <SongTitle>{currentSong.title}</SongTitle>
+          <SongArtist>{currentSong.artist}</SongArtist>
         </SongInfo>
       </NowPlaying>
       <PlayerStatus>
@@ -156,6 +166,7 @@ const Player = () => {
           </ControlButton>
         </PlayerControls>
         <ProgressBar value={progress} max="100" />
+        <span>{progress.toFixed(2)}%</span>
       </PlayerStatus>
     </PlayerContainer>
   );

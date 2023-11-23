@@ -24,21 +24,33 @@ function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setsongs] = useState([]);
   const [editingSongId, setEditingSongId] = useState(null);
-  const [loading, setLoading] = useState(true); // Estado para controle do carregamento
+  const [loading, setLoading] = useState(true); 
+  const [currentSong, setCurrentSong] = useState(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  
   const fetchData = async () => {
     try {
       setLoading(true);
-
+  
       const playlistsResponse = await getPlaylistsFromUser();
       setPlaylists(playlistsResponse.data.playlists);
-
+  
       const songsResponse = await getMusicsFromData();
-      setsongs(songsResponse.data.songs);
+      const allSongs = songsResponse.data.songs;
+  
+      // Verifica se há músicas e define a primeira como a música atual
+      if (Array.isArray(allSongs) && allSongs.length > 0) {
+        setCurrentSong(allSongs[0]);
+        
+        setsongs(allSongs);
+      } else {
+        // Caso não haja músicas, você pode tratar isso de acordo com sua lógica
+        console.warn('Nenhuma música encontrada.');
+      }
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     } finally {
@@ -68,6 +80,16 @@ function FeedPage() {
   const handleCreatePlaylist = () => {
     alert('Lógica de criação de playlist aqui');
   };
+  const handlePlay = (selectedSong) => {
+    setCurrentSong(selectedSong);
+    console.log(selectedSong, 'cleide');
+  };
+
+  const handleAddToPlayer = (selectedSong) => {
+    setCurrentSong(selectedSong);
+    console.log('Música adicionada ao reprodutor:', selectedSong);
+  };
+  
 
   return (
     <FeedContainer>
@@ -95,7 +117,7 @@ function FeedPage() {
       {loading ? (
           <FeedLoading />
         ) : (
-        <List>
+          <List>
           {Array.isArray(songs) &&
             songs.map((song, index) => (
               <SongItem
@@ -106,6 +128,7 @@ function FeedPage() {
                 handleEdit={handleEdit}
                 editingSongId={editingSongId}
                 setEditingSongId={setEditingSongId}
+                onAddToPlayer={handleAddToPlayer}  // Adiciona o callback para adicionar ao reprodutor
               />
             ))}
         </List>
@@ -113,7 +136,7 @@ function FeedPage() {
       </SongsContainer>
       <AddSongContainer>
       </AddSongContainer>
-      <Player />
+      <Player currentSong={currentSong} />
     </FeedContainer>
   );
 }

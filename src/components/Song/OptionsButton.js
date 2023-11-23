@@ -43,18 +43,19 @@ const OptionsButtonIcon = styled(FontAwesomeIcon)`
   display: ${(props) => (props.showIcon ? 'block' : 'none')};
 `;
 
-const OptionsButton = ({ onOptionClick, showIcon }) => {
+const OptionsButton = ({ onOptionClick, showIcon, song }) => {
   const [showOptions, setShowOptions] = useState(false);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
 
-
   return (
     <OptionsButtonContainer>
       <OptionsButtonIcon icon={faEllipsis} showIcon={showIcon} onClick={toggleOptions} />
       <OptionsList show={showOptions}>
+        {/* Adicionando a opção "Adicionar ao Reprodutor" */}
+        <OptionItem onClick={() => onOptionClick('addToPlayer', song)}>Adicionar ao Reprodutor</OptionItem>
         <OptionItem onClick={() => onOptionClick('edit')} className="edit">
           Editar
         </OptionItem>
@@ -66,4 +67,4 @@ const OptionsButton = ({ onOptionClick, showIcon }) => {
   );
 };
 
-export default OptionsButton
+export default OptionsButton;
