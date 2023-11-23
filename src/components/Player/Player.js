@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import YouTube from 'react-youtube';
 import { faPlay, faPause, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
 
 const PlayerContainer = styled.div`
@@ -66,24 +67,77 @@ const ProgressBar = styled.progress`
   width: 220%; /* Ajuste conforme necessário */
   height: 10px;
 `;
+
 const PlayerStatus = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [thumbnail, setThumbnail] = useState('');
+  const [progress, setProgress] = useState(0);
+  const playerRef = useRef(null);
 
-  const togglePlayPause = () => {
+  const opts = {
+    height: '0',
+    width: '0',
+  };
+
+  useEffect(() => {
+    // Atualizar a miniatura usando a API do YouTube Data
+    const fetchThumbnail = async () => {
+      const videoId = 'E0ozmU9cJDg'; // Substitua pelo ID do seu vídeo
+      const apiKey = 'AIzaSyDgJOkFh7VkgB517gj7-KuCSIRbu5_Ce84'; // Substitua pela sua chave da API do YouTube
+
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`
+        );
+        const data = await response.json();
+        const thumbnailUrl = data.items[0]?.snippet?.thumbnails?.default?.url;
+        setThumbnail(thumbnailUrl);
+      } catch (error) {
+        console.error('Erro ao buscar a miniatura do vídeo:', error);
+      }
+    };
+
+    fetchThumbnail();
+  }, []);
+
+  const onReady = (event) => {
+    playerRef.current = event.target;
+
+    // Set up a listener to update the progress bar
+    setInterval(() => {
+      const currentTime = playerRef.current.getCurrentTime();
+      const duration = playerRef.current.getDuration();
+      const calculatedProgress = (currentTime / duration) * 100;
+      setProgress(calculatedProgress);
+    }, 1000); // Update every second
+  };
+
+  const onPlayPauseClick = () => {
+    if (isPlaying) {
+      playerRef.current.pauseVideo();
+    } else {
+      playerRef.current.playVideo();
+    }
     setIsPlaying(!isPlaying);
   };
 
   return (
     <PlayerContainer>
+      <YouTube
+        videoId="E0ozmU9cJDg"
+        opts={opts}
+        containerClassName="audio-container"
+        onReady={onReady}
+      />
+
       <NowPlaying>
-        {/* You can replace these with actual data */}
-        <img src="album-cover.jpg" alt="Album Cover" width="40" height="40" />
+        <img src={'https://i.ytimg.com/vi/E0ozmU9cJDg/default.jpg'} alt="Video Thumbnail" width="40" height="40" />
         <SongInfo>
           <SongTitle>Song Title</SongTitle>
           <SongArtist>Artist Name</SongArtist>
@@ -91,13 +145,17 @@ const Player = () => {
       </NowPlaying>
       <PlayerStatus>
         <PlayerControls>
-          <ControlButton><FontAwesomeIcon icon={faStepBackward} /></ControlButton>
-          <ControlButton onClick={togglePlayPause}>
+          <ControlButton>
+            <FontAwesomeIcon icon={faStepBackward} />
+          </ControlButton>
+          <ControlButton onClick={onPlayPauseClick}>
             <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
           </ControlButton>
-          <ControlButton><FontAwesomeIcon icon={faStepForward} /></ControlButton>
+          <ControlButton>
+            <FontAwesomeIcon icon={faStepForward} />
+          </ControlButton>
         </PlayerControls>
-        <ProgressBar value="50" max="100" /> {/* Ajuste o valor e max conforme necessário */}
+        <ProgressBar value={progress} max="100" />
       </PlayerStatus>
     </PlayerContainer>
   );

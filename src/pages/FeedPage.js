@@ -18,7 +18,7 @@ import {
   AddSongContainer,
   HeaderList,
 } from './Styles/FeedStyles';
-import { CenteredContainer, UpdateFormContainer } from '../components/UpdateSongs/Style';
+
 
 function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
@@ -72,6 +72,7 @@ function FeedPage() {
   return (
     <FeedContainer>
       <PlaylistContainer>
+      
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <Title style={{ marginRight: '10px' }}>My Playlists</Title>
           <button onClick={handleCreatePlaylist}>
