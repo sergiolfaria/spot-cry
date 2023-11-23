@@ -12,7 +12,7 @@ const OptionsButtonContainer = styled.div`
 const OptionsList = styled.div`
   position: absolute;
   top: 0;
-  left: -72px;
+  left: -188px;
   display: ${(props) => (props.show ? 'flex' : 'none')};
   flex-direction: column;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);

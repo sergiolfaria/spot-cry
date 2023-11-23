@@ -4,6 +4,7 @@ import { COLORS } from '../../constants/colors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import YouTube from 'react-youtube';
 import { faPlay, faPause, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
+import { getthumbFromData } from '../../services/getThumb';
 
 const PlayerContainer = styled.div`
   position: fixed;
@@ -80,7 +81,9 @@ const PlayerStatus = styled.div`
 const Player = ({ currentSong }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+
   const playerRef = useRef(null);
+  const [videoThumbnail, setVideoThumbnail] = useState('');
 
   useEffect(() => {
     // Pausa o vídeo quando a música é alterada
@@ -88,18 +91,19 @@ const Player = ({ currentSong }) => {
       playerRef.current.pauseVideo();
       setIsPlaying(false);
     }
+    
   }, [currentSong]);
-
+  
   if (!currentSong || !currentSong.url) {
     // Renderiza algo quando não há uma música válida
     return null;
   }
-
+  
   const extractYouTubeVideoId = (url) => {
     if (typeof url !== 'string') {
       return null;
     }
-
+    
     const urlPattern = /^https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)([a-zA-Z0-9_-]{11})/;
     const match = url.match(urlPattern);
     if (match && match[1]) {
@@ -108,16 +112,24 @@ const Player = ({ currentSong }) => {
       return null;
     }
   };
-
+  
   const videoIdextracted = extractYouTubeVideoId(currentSong.url);
   const opts = {
     height: '0',
     width: '0',
   };
-
+  const fetchYouTubeData = async () => {
+    try {
+      const response = await getthumbFromData(videoIdextracted);
+      const thumbnailUrl = response.data.items[0]?.snippet.thumbnails.default.url;
+      setVideoThumbnail(thumbnailUrl);
+    } catch (error) {
+      console.error('Erro ao buscar vídeos do YouTube:', error);
+    }
+  };
   const onReady = (event) => {
     playerRef.current = event.target;
-
+    
     setInterval(() => {
       const currentTime = playerRef.current.getCurrentTime();
       const duration = playerRef.current.getDuration();
@@ -146,7 +158,8 @@ const Player = ({ currentSong }) => {
 
       <NowPlaying>
         {currentSong.thumbnail && (
-          <img src={currentSong.thumbnail} alt="Video Thumbnail" width="110" height="100" />
+        <img src={videoThumbnail || currentSong.thumbnail} alt="Video Thumbnail" width="110" height="100" />
+
         )}
         <SongInfo>
           <SongTitle>{currentSong.title}</SongTitle>
