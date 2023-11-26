@@ -6,6 +6,7 @@ import { COLORS } from '../../constants/colors';
 
 const OptionsButtonContainer = styled.div`
   position: relative;
+  z-index: 0;
   
 `;
 
@@ -54,12 +55,10 @@ const OptionsButton = ({ onOptionClick, showIcon, song }) => {
     <OptionsButtonContainer>
       <OptionsButtonIcon icon={faEllipsis} showIcon={showIcon} onClick={toggleOptions} />
       <OptionsList show={showOptions}>
-        {/* Adicionando a opção "Adicionar ao Reprodutor" */}
-        <OptionItem onClick={() => onOptionClick('addToPlayer', song)}>Adicionar ao Reprodutor</OptionItem>
-        <OptionItem onClick={() => onOptionClick('edit')} className="edit">
+        <OptionItem onClick={() => onOptionClick('edit', song)} className="edit">
           Editar
         </OptionItem>
-        <OptionItem onClick={() => onOptionClick('delete')} className="delete">
+        <OptionItem onClick={() => onOptionClick('delete', song)} className="delete">
           Excluir
         </OptionItem>
       </OptionsList>

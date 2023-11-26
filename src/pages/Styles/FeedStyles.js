@@ -16,23 +16,21 @@ export const SongFormContainer = styled.div`
 `
 
 export const PlaylistContainer = styled.div`
-  position: fixed;
-  top: 30px;
+  top: 300px;
   bottom: 100px;
-  padding: 20px;
+  padding: 21px;
   background-color: ${COLORS.darkGray};
   display: flex;
   flex-direction: column;
   justify-content: start;
   border-radius: 8px;
-  margin: 1px 10px 0px 18px;
-  overflow-y: auto;
+  margin: 130px 10px 100px 18px;
 `;
 
 export const SongsContainer = styled.div`
-  position: fixed;
+  position: absolute;
   top: 100px;
-  left: 18%;
+  left: 17%;
   right: 25%;
   bottom: 100px;
   padding: 20px;
@@ -56,10 +54,11 @@ export const SongsContainer = styled.div`
 `;
 
 export const AddSongContainer = styled.div`
+  position: relative;
   width: 25%;
   padding: 20px;
-  background-color: ${COLORS.lightGray};
   display: flex;
+  z-index: 2;
 `;
 
 export const Title = styled.h1`
@@ -82,7 +81,7 @@ export const ListItem = styled.li`
 export const HeaderList = styled.div`
   position: fixed;
   top: 30px;
-  left: 18%;
+  left: 17%;
   right: 25%;
   padding: 20px;
   background-color: ${COLORS.darkGray};
@@ -91,7 +90,7 @@ export const HeaderList = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 8px 8px 0px 0px;
-  z-index: 0;
+  z-index: 1;
 
   /* Estilização da barra de rolagem para navegadores WebKit (Chrome, Safari) */
   &::-webkit-scrollbar {

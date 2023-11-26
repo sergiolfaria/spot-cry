@@ -42,13 +42,11 @@ function FeedPage() {
       const songsResponse = await getMusicsFromData();
       const allSongs = songsResponse.data.songs;
   
-      // Verifica se há músicas e define a primeira como a música atual
       if (Array.isArray(allSongs) && allSongs.length > 0) {
         setCurrentSong(allSongs[0]);
         
         setsongs(allSongs);
       } else {
-        // Caso não haja músicas, você pode tratar isso de acordo com sua lógica
         console.warn('Nenhuma música encontrada.');
       }
     } catch (error) {
@@ -82,14 +80,7 @@ function FeedPage() {
   };
   const handlePlay = (selectedSong) => {
     setCurrentSong(selectedSong);
-    console.log(selectedSong, 'cleide');
   };
-
-  const handleAddToPlayer = (selectedSong) => {
-    setCurrentSong(selectedSong);
-    console.log('Música adicionada ao reprodutor:', selectedSong);
-  };
-  
 
   return (
     <FeedContainer>
@@ -121,14 +112,14 @@ function FeedPage() {
           {Array.isArray(songs) &&
             songs.map((song, index) => (
               <SongItem
-                key={song.id}
-                song={song}
-                index={index}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-                editingSongId={editingSongId}
-                setEditingSongId={setEditingSongId}
-                onAddToPlayer={handleAddToPlayer}  // Adiciona o callback para adicionar ao reprodutor
+              key={song.id}
+              song={song}
+              index={index}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              onPlay={handlePlay}
+              editingSongId={editingSongId}
+              setEditingSongId={setEditingSongId}
               />
             ))}
         </List>

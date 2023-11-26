@@ -41,7 +41,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding: 10px;
+  padding: 13px;
   cursor: pointer;
   overflow: hidden;
   position: relative;

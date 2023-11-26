@@ -27,6 +27,18 @@ export const SongDetails = styled.div`
   padding: 16px;
   margin-bottom: 16px;
 `;
+export const PlayButton = styled.button`
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: ${COLORS.white};
+  font-size: 18px;
+  margin-left: 10px;
+
+  &:hover {
+    color: ${COLORS.blue}; /* Change the color on hover */
+  }
+`;
 
 export const SongTitle = styled.h3`
   font-size: 18px;
@@ -62,4 +74,9 @@ export const SongActionButtons = styled.div`
     color: ${COLORS.white};
   }
 `;
-
+export const PlayButtonContainer = styled.div`
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px; // Ajuste conforme necessário
+  color: ${COLORS.blue}; // Ajuste a cor conforme necessário
+`;
