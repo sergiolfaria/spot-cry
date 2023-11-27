@@ -8,7 +8,7 @@ import { login } from "../../services/users";
 import Loading from "../Loading/Loading";
 
 export const LoginForm = () => {
-  const [form, onChange, clear] = useForm({ email: "", password: "" });
+  const [form, onChange] = useForm({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

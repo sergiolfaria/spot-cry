@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import UpdateForm from '../UpdateSongs/UpdateForm';
-import OptionsButton from './OptionsButton';
+import UpdateForm from '../UpdateSongsForm/UpdateForm';
+import OptionsButton from './OptionsContainer';
 import { SongArtist, SongDetails, SongItemContainer, SongTitle, PlayButton} from './Style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';

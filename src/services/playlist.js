@@ -1,6 +1,5 @@
 import axios from "axios";
 import { BASE_URL } from "../constants/urls";
-import { goToFeed } from "../routes/Coordinator";
 import { getTokenData } from "./getTokenData";
 
 export const getPlaylistsFromUser = () => {

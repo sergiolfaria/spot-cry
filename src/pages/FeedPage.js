@@ -1,51 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { getPlaylistsFromUser } from '../services/playlist';
 import { getMusicsFromData } from '../services/getMusicData';
-import SongForm from '../components/PostSongs/FormPostSongs';
+import PostSongForm from '../components/PostSongsForm/PostSongForm';
 import { deleteMusicsFromData } from '../services/deleteSong';
 import SongItem from '../components/Song/SongItem';
 import FeedLoading from '../components/Loading/FeedLoading';
 import Player from '../components/Player/Player';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  FeedContainer,
-  PlaylistContainer,
-  SongsContainer,
-  Title,
-  List,
-  ListItem,
-  AddSongContainer,
-  HeaderList,
-} from './Styles/FeedStyles';
+import SearchBar from '../components/Song/SearchBar';
+import { FeedContainer, PlaylistContainer, SongsContainer, Title, List, ListItem, AddSongContainer, HeaderList, } from './Styles/FeedStyles';
 
 
 function FeedPage() {
   const [playlists, setPlaylists] = useState([]);
-  const [songs, setsongs] = useState([]);
+  const [allSongs, setAllSongs] = useState([]); // Armazena todas as músicas
+  const [songs, setSongs] = useState([]); // Armazena as músicas exibidas após filtro
   const [editingSongId, setEditingSongId] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [currentSong, setCurrentSong] = useState(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  
   const fetchData = async () => {
     try {
       setLoading(true);
-  
+
       const playlistsResponse = await getPlaylistsFromUser();
       setPlaylists(playlistsResponse.data.playlists);
-  
+
       const songsResponse = await getMusicsFromData();
-      const allSongs = songsResponse.data.songs;
-  
-      if (Array.isArray(allSongs) && allSongs.length > 0) {
-        setCurrentSong(allSongs[0]);
-        
-        setsongs(allSongs);
+      const allSongsData = songsResponse.data.songs;
+
+      if (Array.isArray(allSongsData) && allSongsData.length > 0) {
+        setAllSongs(allSongsData);
+        setCurrentSong(allSongsData[0]);
+        setSongs(allSongsData);
       } else {
         console.warn('Nenhuma música encontrada.');
       }
@@ -78,14 +70,23 @@ function FeedPage() {
   const handleCreatePlaylist = () => {
     alert('Lógica de criação de playlist aqui');
   };
+
   const handlePlay = (selectedSong) => {
     setCurrentSong(selectedSong);
+  };
+
+  const handleSearch = (searchTerm) => {
+    // Filtra as músicas com base no termo de busca
+    const filteredSongs = allSongs.filter((song) =>
+      song.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setSongs(filteredSongs);
   };
 
   return (
     <FeedContainer>
       <PlaylistContainer>
-      
+
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <Title style={{ marginRight: '10px' }}>My Playlists</Title>
           <button onClick={handleCreatePlaylist}>
@@ -102,30 +103,32 @@ function FeedPage() {
 
       <HeaderList>
         <Title>All Songs</Title>
-        <SongForm onSubmitSuccess={onSubmitSuccess} />
+        <PostSongForm onSubmitSuccess={onSubmitSuccess} />
+        <SearchBar songs={allSongs} onSearch={handleSearch} />
       </HeaderList>
       <SongsContainer>
-      {loading ? (
+        {loading ? (
           <FeedLoading />
         ) : (
           <List>
-          {Array.isArray(songs) &&
-            songs.map((song, index) => (
-              <SongItem
-              key={song.id}
-              song={song}
-              index={index}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
-              onPlay={handlePlay}
-              editingSongId={editingSongId}
-              setEditingSongId={setEditingSongId}
-              />
-            ))}
-        </List>
+            {Array.isArray(songs) &&
+              songs.map((song, index) => (
+                <SongItem
+                  key={song.id}
+                  song={song}
+                  index={index}
+                  handleDelete={handleDelete}
+                  handleEdit={handleEdit}
+                  onPlay={handlePlay}
+                  editingSongId={editingSongId}
+                  setEditingSongId={setEditingSongId}
+                />
+              ))}
+          </List>
         )}
       </SongsContainer>
       <AddSongContainer>
+        {/* Adicione aqui o conteúdo da AddSongContainer */}
       </AddSongContainer>
       <Player currentSong={currentSong} />
     </FeedContainer>
