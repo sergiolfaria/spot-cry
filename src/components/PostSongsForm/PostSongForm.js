@@ -37,7 +37,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
                   placeholder="Título"
                 />
                 <FormLabel htmlFor="title" className="form__label">
-                  Título
+                  Título:
                 </FormLabel>
               </FormGroup>
               <FormGroup className="form__group field">
@@ -51,7 +51,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
                   placeholder="Artista"
                 />
                 <FormLabel htmlFor="artist" className="form__label">
-                  Artista
+                  Artista:
                 </FormLabel>
               </FormGroup>
               <FormGroup className="form__group field">
@@ -65,7 +65,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
                   placeholder="URL"
                 />
                 <FormLabel htmlFor="url" className="form__label">
-                  URL
+                  URL:
                 </FormLabel>
               </FormGroup>
 

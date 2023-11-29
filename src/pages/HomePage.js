@@ -10,7 +10,7 @@ export const HomePage = () => {
       <Header />
       <Banner />
       <Main />
-      <Footer / >
+      <Footer />
     </div>
   );
 };

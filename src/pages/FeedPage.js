@@ -9,7 +9,7 @@ import Player from '../components/Player/Player';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from '../components/Song/SearchBar';
-import { FeedContainer, PlaylistContainer, SongsContainer, Title, List, ListItem, AddSongContainer, HeaderList, } from './Styles/FeedStyles';
+import { FeedContainer, PlaylistContainer, SongsContainer, Title, List, ListItem, Playercontainer, HeaderList, SongsAndHeaderContainer, Headerduo } from './Styles/FeedStyles';
 
 
 function FeedPage() {
@@ -85,14 +85,12 @@ function FeedPage() {
 
   return (
     <FeedContainer>
-      <PlaylistContainer>
 
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <Title style={{ marginRight: '10px' }}>My Playlists</Title>
-          <button onClick={handleCreatePlaylist}>
-            <FontAwesomeIcon icon={faPlus} style={{ color: 'ffffff', marginRight: '5px' }} />
-          </button>
-        </div>
+      <PlaylistContainer>
+        <Title>My Playlists</Title>
+        <button onClick={handleCreatePlaylist}>
+          <FontAwesomeIcon icon={faPlus} style={{ color: 'ffffff', marginRight: '5px' }} />
+        </button>
         <List>
           {Array.isArray(playlists) &&
             playlists.map((playlist, index) => (
@@ -101,36 +99,44 @@ function FeedPage() {
         </List>
       </PlaylistContainer>
 
-      <HeaderList>
-        <Title>All Songs</Title>
-        <PostSongForm onSubmitSuccess={onSubmitSuccess} />
-        <SearchBar songs={allSongs} onSearch={handleSearch} />
-      </HeaderList>
-      <SongsContainer>
-        {loading ? (
-          <FeedLoading />
-        ) : (
-          <List>
-            {Array.isArray(songs) &&
-              songs.map((song, index) => (
-                <SongItem
-                  key={song.id}
-                  song={song}
-                  index={index}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                  onPlay={handlePlay}
-                  editingSongId={editingSongId}
-                  setEditingSongId={setEditingSongId}
-                />
-              ))}
-          </List>
-        )}
-      </SongsContainer>
-      <AddSongContainer>
-        {/* Adicione aqui o conteúdo da AddSongContainer */}
-      </AddSongContainer>
-      <Player currentSong={currentSong} />
+
+      <SongsAndHeaderContainer>
+        <HeaderList>
+          <Title>All Songs</Title>
+          <Headerduo>
+            <PostSongForm onSubmitSuccess={onSubmitSuccess} />
+            <SearchBar songs={allSongs} onSearch={handleSearch} />
+          </Headerduo>
+        </HeaderList>
+        <SongsContainer>
+          {loading ? (
+            <FeedLoading />
+          ) : (
+            <List>
+              {Array.isArray(songs) &&
+                songs.map((song, index) => (
+                  <SongItem
+                    key={song.id}
+                    song={song}
+                    index={index}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    onPlay={handlePlay}
+                    editingSongId={editingSongId}
+                    setEditingSongId={setEditingSongId}
+                  />
+                ))}
+            </List>
+          )}
+        </SongsContainer>
+
+      </SongsAndHeaderContainer>
+
+      <Playercontainer>
+        <Player currentSong={currentSong} />
+      </Playercontainer>
+
+
     </FeedContainer>
   );
 }

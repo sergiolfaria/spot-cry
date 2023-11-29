@@ -122,9 +122,9 @@ export const FormField = styled.input`
   border: 0;
   border-bottom: 2px solid ${COLORS.darkGray};
   outline: 0;
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: ${COLORS.black};
-  padding: 7px 0;
+  padding: 13px 0;
   background: transparent;
   transition: border-color 0.2s;
 
@@ -133,7 +133,7 @@ export const FormField = styled.input`
   }
 
   &:placeholder-shown ~ .form__label {
-    font-size: 1.3rem;
+    font-size: 1rem;
     cursor: text;
     top: 20px;
   }

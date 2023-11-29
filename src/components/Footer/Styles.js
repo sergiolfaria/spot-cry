@@ -4,7 +4,7 @@ import { COLORS } from "../../constants/colors";
 export const FooterContainer = styled.footer`
   display: grid;
   height: 300px;
-  background-color: ${COLORS.yellow};
+  background: ${COLORS.gradientBlue};
   grid-template-columns: 1fr 2fr 1fr;
   position: relative;
   bottom: 0;

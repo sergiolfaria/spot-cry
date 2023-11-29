@@ -2,63 +2,84 @@ import styled from "styled-components";
 import { COLORS } from "../../constants/colors";
 
 export const FeedContainer = styled.div`
+  background-color: ${COLORS.black};
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   font-family: "Roboto", sans-serif;
   color: ${COLORS.darkGray};
-  background-color: ${COLORS.black};
+`;
+
+
+export const Headerduo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction:row;
+  gap:5vh;
 `;
 export const SongFormContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
 
-`
+export const SongsAndHeaderContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top:5vh;
+`;
 
 export const PlaylistContainer = styled.div`
-  top: 300px;
-  bottom: 100px;
+  max-height: 100%;
   padding: 21px;
   background-color: ${COLORS.darkGray};
   display: flex;
   flex-direction: column;
   justify-content: start;
   border-radius: 8px;
-  margin: 130px 10px 100px 18px;
+  
+  margin: 5vh 18px 30px 18px;
+  flex-shrink: 0;
 `;
 
 export const SongsContainer = styled.div`
-  position: absolute;
-  top: 100px;
-  left: 17%;
-  right: 25%;
-  bottom: 100px;
+  flex: 1;
+  min-height: 40%;
   padding: 20px;
   overflow-y: auto;
   background-color: ${COLORS.darkGray};
-  border-radius: 8px;
+  border-radius: 0 0 9px 9px;
+  margin: 0 0 30px 0;
 
-  /* Estilização da barra de rolagem para navegadores WebKit (Chrome, Safari) */
+  /* Estilização da barra de rolagem */
+  scrollbar-width: thin;
+  scrollbar-color: ${COLORS.blue} ${COLORS.darkGray};
+
   &::-webkit-scrollbar {
     width: 10px;
+    border-radius: 50px;
   }
+
 
   &::-webkit-scrollbar-thumb {
     background-color: ${COLORS.blue};
-    border-radius: 5px;
+    border-radius: 14px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: none;
+    background-color: ${COLORS.darkGray};
+    border-radius: 50px;
   }
 `;
 
-export const AddSongContainer = styled.div`
-  position: relative;
-  width: 25%;
-  padding: 20px;
+
+export const Playercontainer = styled.div`
+  
+  width: 30%;
   display: flex;
-  z-index: 2;
+ 
 `;
 
 export const Title = styled.h1`
@@ -79,10 +100,8 @@ export const ListItem = styled.li`
 `;
 
 export const HeaderList = styled.div`
-  position: fixed;
-  top: 30px;
-  left: 17%;
-  right: 25%;
+  position: sticky;
+  top: 0;
   padding: 20px;
   background-color: ${COLORS.darkGray};
   display: flex;
@@ -91,21 +110,4 @@ export const HeaderList = styled.div`
   align-items: center;
   border-radius: 8px 8px 0px 0px;
   z-index: 1;
-
-  /* Estilização da barra de rolagem para navegadores WebKit (Chrome, Safari) */
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${COLORS.blue};
-    border-radius: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: ${COLORS.darkGray};
-  }
 `;
-
-
-// Se necessário, adicione mais estilos para aprimorar a aparência
