@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
@@ -7,13 +7,12 @@ import { COLORS } from '../../constants/colors';
 const OptionsButtonContainer = styled.div`
   position: relative;
   z-index: 0;
-  
 `;
 
 const OptionsList = styled.div`
   position: absolute;
-  top: 0;
-  left: -188px;
+  bottom: -30px;
+  right: 4px; // Ajuste conforme necessário para posicionar à direita
   display: ${(props) => (props.show ? 'flex' : 'none')};
   flex-direction: column;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -31,7 +30,7 @@ const OptionItem = styled.button`
   background-color: ${COLORS.gray};
   color: ${COLORS.white};
   border-radius: 8px;
-  transition: background-color 0.1s ease; /* Adiciona um efeito de transição para a cor de fundo */
+  transition: background-color 0.1s ease;
 
   &:hover {
     background-color: ${(props) => (props.className === 'delete' ? COLORS.red : COLORS.blue)};
@@ -44,15 +43,29 @@ const OptionsButtonIcon = styled(FontAwesomeIcon)`
   display: ${(props) => (props.showIcon ? 'block' : 'none')};
 `;
 
-const OptionsButton = ({ onOptionClick, showIcon, song }) => {
+const OptionsContainer = ({ onOptionClick, showIcon, song }) => {
   const [showOptions, setShowOptions] = useState(false);
+  const containerRef = useRef(null);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
 
+  const handleClickOutside = (event) => {
+    if (containerRef.current && !containerRef.current.contains(event.target)) {
+      setShowOptions(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <OptionsButtonContainer>
+    <OptionsButtonContainer ref={containerRef}>
       <OptionsButtonIcon icon={faEllipsis} showIcon={showIcon} onClick={toggleOptions} />
       <OptionsList show={showOptions}>
         <OptionItem onClick={() => onOptionClick('edit', song)} className="edit">
@@ -66,4 +79,4 @@ const OptionsButton = ({ onOptionClick, showIcon, song }) => {
   );
 };
 
-export default OptionsButton;
+export default OptionsContainer;

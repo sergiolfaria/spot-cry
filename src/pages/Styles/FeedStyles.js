@@ -9,7 +9,6 @@ export const FeedContainer = styled.div`
   color: ${COLORS.darkGray};
 `;
 
-
 export const Headerduo = styled.div`
   display: flex;
   align-items: center;

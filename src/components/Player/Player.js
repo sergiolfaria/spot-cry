@@ -1,16 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import YouTube from 'react-youtube';
-import { faPlay, faPause, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faVolumeMute, faVolumeUp, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
 import { getthumbFromData } from '../../services/Songs/getThumb';
 import { getdetailFromData } from '../../services/Songs/GetDuration';
-import { ControlButton, NowPlaying, PlayerContainer, PlayerControls, PlayerStatus, ProgressBar, SongArtist, SongInfo, SongTitle } from './Styles';
-
-
-
+import { ControlButton, VolumeControl, NowPlaying, PlayerContainer, PlayerControls, PlayerStatus, ProgressBar, SongArtist, SongInfo, SongTitle } from './Styles';
 
 const Player = ({ currentSong }) => {
   const [totalDuration, setTotalDuration] = useState(0);
+  const [volume, setVolume] = useState(100);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volumeBeforeMute, setVolumeBeforeMute] = useState(100);
+
+  const opts = {
+    height: '0',
+    width: '0',
+    playerVars: {
+      controls: 0,
+      disablekb: 1,
+    },
+  };
 
   const parseYoutubeDuration = (duration) => {
     const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -43,7 +52,7 @@ const Player = ({ currentSong }) => {
   const [videoThumbnail, setVideoThumbnail] = useState('');
 
   useEffect(() => {
-   
+
     if (playerRef.current) {
       playerRef.current.pauseVideo();
       setIsPlaying(false);
@@ -70,10 +79,6 @@ const Player = ({ currentSong }) => {
   };
 
   const videoIdextracted = extractYouTubeVideoId(currentSong.url);
-  const opts = {
-    height: '0',
-    width: '0',
-  };
 
   const onReady = (event) => {
     playerRef.current = event.target;
@@ -98,7 +103,27 @@ const Player = ({ currentSong }) => {
     const seconds = Math.floor(timeInSeconds % 60);
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
+  const onVolumeChange = (e) => {
+    const newVolume = e.target.value;
+    const newMuteState = newVolume === '0' || newVolume === 0;
+    setIsMuted(newMuteState);
+    playerRef.current.setVolume(newVolume);
+    setVolume(newVolume);
+    setVolumeBeforeMute(newMuteState ? volumeBeforeMute : newVolume);
+  };
+  const onMuteClick = () => {
+    const newMuteState = !isMuted;
+    setIsMuted(newMuteState);
 
+    if (newMuteState) {
+      setVolumeBeforeMute(volume);
+      playerRef.current.setVolume(0);
+      setVolume(0);
+    } else {
+      playerRef.current.setVolume(volumeBeforeMute);
+      setVolume(volumeBeforeMute);
+    }
+  };
 
   return (
     <PlayerContainer>
@@ -129,6 +154,10 @@ const Player = ({ currentSong }) => {
           </ControlButton>
           <ControlButton>
             <FontAwesomeIcon icon={faStepForward} />
+          </ControlButton>
+          <VolumeControl type="range" min="0" max="100" value={volume} onChange={onVolumeChange} />
+          <ControlButton onClick={onMuteClick}>
+            <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} />
           </ControlButton>
         </PlayerControls>
         <ProgressBar value={progress} max={totalDuration} />

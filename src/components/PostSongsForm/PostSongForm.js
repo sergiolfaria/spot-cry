@@ -1,18 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { postSongsToData } from '../../services/Songs/addNewSong';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Container, Button, PostFormContainer, CenteredContainer, Form, FormGroup, FormField, FormLabel, StyledButton } from './Style';
-import useSongForm from '../../hooks/useSongForm';
+import { Container, Form, Button, CenteredContainer, FormField, FormGroup, FormLabel, PostFormContainer, StyledButton } from '../PostSongsForm/Style';
 
 const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
-  const {
-    songData,
-    expanded,
-    handleSubmit,
-    handleChange,
-    handleCancel,
-    handleToggle,
-  } = useSongForm({ onSubmitSuccess, onCancel });
+  const [songData, setSongData] = useState({
+    title: '',
+    artist: '',
+    url: '',
+  });
+  const [expanded, setExpanded] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await postSongsToData(songData);
+      setSongData({
+        title: '',
+        artist: '',
+        url: '',
+      });
+
+      alert('Música postada com sucesso!');
+
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
+    } catch (error) {
+      console.error('Erro ao postar a música:', error);
+      alert('Erro ao postar a música. Por favor, tente novamente.');
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setSongData({
+      ...songData,
+      [name]: value,
+    });
+  };
+  const handleCancel = () => {
+    setSongData({
+      title: '',
+      artist: '',
+      url: '',
+    });
+    setExpanded(false);
+  };
+
+  const handleToggle = () => {
+    setExpanded(true);
+  };
 
   return (
     <Container>
@@ -37,7 +77,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
                   placeholder="Título"
                 />
                 <FormLabel htmlFor="title" className="form__label">
-                  Título:
+                  Título
                 </FormLabel>
               </FormGroup>
               <FormGroup className="form__group field">
@@ -51,7 +91,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
                   placeholder="Artista"
                 />
                 <FormLabel htmlFor="artist" className="form__label">
-                  Artista:
+                  Artista
                 </FormLabel>
               </FormGroup>
               <FormGroup className="form__group field">
@@ -65,7 +105,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
                   placeholder="URL"
                 />
                 <FormLabel htmlFor="url" className="form__label">
-                  URL:
+                  URL
                 </FormLabel>
               </FormGroup>
 

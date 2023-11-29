@@ -78,11 +78,13 @@ function FeedPage() {
   const handleSearch = (searchTerm) => {
     // Filtra as músicas com base no termo de busca
     const filteredSongs = allSongs.filter((song) =>
-      song.title.toLowerCase().includes(searchTerm.toLowerCase())
+      song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        song.artist.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSongs(filteredSongs);
   };
 
+  
   return (
     <FeedContainer>
 

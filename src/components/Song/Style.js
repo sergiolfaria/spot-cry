@@ -12,6 +12,16 @@ export const SongItemContainer = styled.div`
     background-color: ${COLORS.gray};
     color: ${COLORS.white};
   }
+
+  /* Adiciona manipuladores de eventos para ocultar OptionsContainer */
+  &:hover .options-container {
+    display: flex;
+  }
+
+  /* Adiciona estilo para OptionsContainer */
+  .options-container {
+    display: none;
+  }
 `;
 
 export const SongDetails = styled.div`
@@ -26,6 +36,7 @@ export const SongDetails = styled.div`
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
+  z-index: 0;
 `;
 export const PlayButton = styled.button`
   cursor: pointer;
@@ -79,4 +90,10 @@ export const PlayButtonContainer = styled.div`
   font-size: 16px;
   margin-right: 10px; // Ajuste conforme necessário
   color: ${COLORS.blue}; // Ajuste a cor conforme necessário
+`;
+export const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Move os botões para a extremidade direita do container */
+  gap: 20px;
 `;
