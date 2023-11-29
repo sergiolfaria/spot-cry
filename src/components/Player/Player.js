@@ -1,96 +1,41 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
-import { COLORS } from '../../constants/colors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import YouTube from 'react-youtube';
 import { faPlay, faPause, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
 import { getthumbFromData } from '../../services/Songs/getThumb';
+import { getdetailFromData } from '../../services/Songs/GetDuration';
+import { ControlButton, NowPlaying, PlayerContainer, PlayerControls, PlayerStatus, ProgressBar, SongArtist, SongInfo, SongTitle } from './Styles';
 
-const PlayerContainer = styled.div`
- 
-  width: 100%;
-  background-color: ${COLORS.black};
-  display: flex;
-  flex-direction:column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
-`;
 
-const NowPlaying = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-`;
-
-const SongInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  color: ${COLORS.white};
-`;
-
-const SongTitle = styled.h4`
-  font-size: 2.5vh;
-  margin: 0;
-  color: ${COLORS.white};
-`;
-
-const SongArtist = styled.p`
-  font-size: 1.5vh;
-  margin: 0;
-  color: ${COLORS.white};
-`;
-
-const PlayerControls = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const ControlButton = styled.button`
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  color: ${COLORS.white};
-  background-color: transparent;
-
-  &:hover {
-    background-color: ${COLORS.gray};
-    color: ${COLORS.blue};
-  }
-`;
-
-const ProgressBar = styled.progress`
-  width: 220%;
-  height: 10px;
-`;
-
-const PlayerStatus = styled.div`
-  display: flex;
-  color: ${COLORS.white};
-  flex-direction: column;
-  align-items: center;
-`;
-
-// Exemplo de uso:
 
 
 const Player = ({ currentSong }) => {
+  const [totalDuration, setTotalDuration] = useState(0);
+
+  const parseYoutubeDuration = (duration) => {
+    const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+
+    const hours = (parseInt(match[1], 10) || 0);
+    const minutes = (parseInt(match[2], 10) || 0);
+    const seconds = (parseInt(match[3], 10) || 0);
+
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
   const fetchYouTubeData = async () => {
     try {
       const response = await getthumbFromData(videoIdextracted);
       const thumbnailUrl = response.data.items[0]?.snippet.thumbnails.high.url;
       setVideoThumbnail(thumbnailUrl);
+      const responseDetail = await getdetailFromData(videoIdextracted);
+      const duration = responseDetail.data.items[0]?.contentDetails?.duration;
+      const totalDurationInSeconds = parseYoutubeDuration(duration);
+      setTotalDuration(totalDurationInSeconds);
     } catch (error) {
-      console.error('Erro ao buscar vídeos do YouTube:', error);
+      console.error('Error fetching video details:', error);
     }
   };
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -98,17 +43,15 @@ const Player = ({ currentSong }) => {
   const [videoThumbnail, setVideoThumbnail] = useState('');
 
   useEffect(() => {
-    // Pausa o vídeo quando a música é alterada
+   
     if (playerRef.current) {
       playerRef.current.pauseVideo();
       setIsPlaying(false);
     }
-    fetchYouTubeData()
-
+    fetchYouTubeData();
   }, [currentSong]);
 
   if (!currentSong || !currentSong.url) {
-    // Renderiza algo quando não há uma música válida
     return null;
   }
 
@@ -131,6 +74,7 @@ const Player = ({ currentSong }) => {
     height: '0',
     width: '0',
   };
+
   const onReady = (event) => {
     playerRef.current = event.target;
 
@@ -139,6 +83,7 @@ const Player = ({ currentSong }) => {
       setProgress(currentTime);
     }, 1000);
   };
+
   const onPlayPauseClick = () => {
     if (isPlaying) {
       playerRef.current.pauseVideo();
@@ -147,6 +92,7 @@ const Player = ({ currentSong }) => {
     }
     setIsPlaying(!isPlaying);
   };
+
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
@@ -185,11 +131,15 @@ const Player = ({ currentSong }) => {
             <FontAwesomeIcon icon={faStepForward} />
           </ControlButton>
         </PlayerControls>
-        <ProgressBar value={progress} max={currentSong.duration} />
-        <span>{formatTime(progress)} / {formatTime(currentSong.duration)}</span>
+        <ProgressBar value={progress} max={totalDuration} />
+        <span>{formatTime(progress)} / {formatTime(totalDuration)}</span>
       </PlayerStatus>
     </PlayerContainer>
   );
 };
 
 export default Player;
+
+
+
+
