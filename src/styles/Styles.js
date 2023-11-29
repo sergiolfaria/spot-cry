@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   * {
-    font-family: 'Raleway', sans-serif;
+    font-family: '', sans-serif;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
