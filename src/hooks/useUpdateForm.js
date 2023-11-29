@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import  {updateMusicsFromData} from '../services/updateMusicsFromData'
-import { getMusicsFromData } from "../services/getMusicData";
+import  {updateMusicsFromData} from '../services/Songs/updateMusicsFromData'
+import { getMusicsFromData } from "../services/Songs/getMusicData";
 
 const useUpdateForm = ({ songId, onCancel, onUpdateSuccess }) => {
   const [updatedData, setUpdatedData] = useState({

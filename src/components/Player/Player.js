@@ -4,7 +4,7 @@ import { COLORS } from '../../constants/colors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import YouTube from 'react-youtube';
 import { faPlay, faPause, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
-import { getthumbFromData } from '../../services/getThumb';
+import { getthumbFromData } from '../../services/Songs/getThumb';
 
 const PlayerContainer = styled.div`
  
@@ -31,12 +31,15 @@ const SongInfo = styled.div`
 `;
 
 const SongTitle = styled.h4`
+  font-size: 2.5vh;
   margin: 0;
+  color: ${COLORS.white};
 `;
 
 const SongArtist = styled.p`
-  font-size: 14px;
+  font-size: 1.5vh;
   margin: 0;
+  color: ${COLORS.white};
 `;
 
 const PlayerControls = styled.div`
@@ -59,16 +62,18 @@ const ControlButton = styled.button`
 
   &:hover {
     background-color: ${COLORS.gray};
+    color: ${COLORS.blue};
   }
 `;
 
 const ProgressBar = styled.progress`
-  width: 220%; /* Ajuste conforme necessário */
+  width: 220%;
   height: 10px;
 `;
 
 const PlayerStatus = styled.div`
   display: flex;
+  color: ${COLORS.white};
   flex-direction: column;
   align-items: center;
 `;
@@ -131,12 +136,9 @@ const Player = ({ currentSong }) => {
 
     setInterval(() => {
       const currentTime = playerRef.current.getCurrentTime();
-      const duration = playerRef.current.getDuration();
-      const calculatedProgress = (currentTime / duration) * 100;
-      setProgress(calculatedProgress);
+      setProgress(currentTime);
     }, 1000);
   };
-
   const onPlayPauseClick = () => {
     if (isPlaying) {
       playerRef.current.pauseVideo();
@@ -145,6 +147,12 @@ const Player = ({ currentSong }) => {
     }
     setIsPlaying(!isPlaying);
   };
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
 
   return (
     <PlayerContainer>
@@ -158,7 +166,7 @@ const Player = ({ currentSong }) => {
       <NowPlaying>
 
         {videoThumbnail && (
-          <img src={videoThumbnail} alt="Video Thumbnail"  width="480" height= "360" />
+          <img src={videoThumbnail} alt="Video Thumbnail" width="480" height="360" />
         )}
         <SongInfo>
           <SongTitle>{currentSong.title}</SongTitle>
@@ -177,8 +185,8 @@ const Player = ({ currentSong }) => {
             <FontAwesomeIcon icon={faStepForward} />
           </ControlButton>
         </PlayerControls>
-        <ProgressBar value={progress} max="100" />
-        <span>{progress.toFixed(2)}%</span>
+        <ProgressBar value={progress} max={currentSong.duration} />
+        <span>{formatTime(progress)} / {formatTime(currentSong.duration)}</span>
       </PlayerStatus>
     </PlayerContainer>
   );

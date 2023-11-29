@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getPlaylistsFromUser } from '../services/playlist';
-import { getMusicsFromData } from '../services/getMusicData';
+import { getPlaylistsFromUser } from '../services/Playlists/playlist';
+import { getMusicsFromData } from '../services/Songs/getMusicData';
 import PostSongForm from '../components/PostSongsForm/PostSongForm';
-import { deleteMusicsFromData } from '../services/deleteSong';
+import { deleteMusicsFromData } from '../services/Songs/deleteSong';
 import SongItem from '../components/Song/SongItem';
 import FeedLoading from '../components/Loading/FeedLoading';
 import Player from '../components/Player/Player';
