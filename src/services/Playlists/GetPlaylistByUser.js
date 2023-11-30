@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../constants/urls";
+import { BASE_URL } from "../../constants/urls";
 
 export const getPlaylistsByUser = (userId) => {
   const token = localStorage.getItem("token");

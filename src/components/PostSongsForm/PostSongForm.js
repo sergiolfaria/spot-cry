@@ -27,6 +27,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
 
       if (onSubmitSuccess) {
         onSubmitSuccess();
+        setExpanded(false); // Close the form after successful submission
       }
     } catch (error) {
       console.error('Erro ao postar a música:', error);
@@ -41,6 +42,7 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
       [name]: value,
     });
   };
+  
   const handleCancel = () => {
     setSongData({
       title: '',
@@ -48,6 +50,9 @@ const PostSongForm = ({ onSubmitSuccess, onCancel }) => {
       url: '',
     });
     setExpanded(false);
+    if (onCancel) {
+      onCancel();
+    }
   };
 
   const handleToggle = () => {

@@ -38,9 +38,28 @@ export const PlaylistContainer = styled.div`
   flex-direction: column;
   justify-content: start;
   border-radius: 8px;
-  
   margin: 5vh 18px 30px 18px;
   flex-shrink: 0;
+  overflow-y: auto; /* Add this line to enable vertical scrollbar */
+
+  /* Estilização da barra de rolagem */
+  scrollbar-width: thin;
+  scrollbar-color: ${COLORS.blue} ${COLORS.darkGray};
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 50px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${COLORS.blue};
+    border-radius: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${COLORS.darkGray};
+    border-radius: 50px;
+  }
 `;
 
 export const SongsContainer = styled.div`
@@ -96,6 +115,7 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 export const HeaderList = styled.div`
@@ -110,3 +130,26 @@ export const HeaderList = styled.div`
   border-radius: 8px 8px 0px 0px;
   z-index: 1;
 `;
+export const PlaylistHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid ${COLORS.blue};
+  margin-bottom: 10px;
+`;
+
+export const PlaylistTitle = styled.h2`
+  font-size: 20px;
+  color: ${COLORS.blue};
+`;
+
+export const PlaylistButton = styled.button`
+  background-color: ${COLORS.blue};
+  color: ${COLORS.white};
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
