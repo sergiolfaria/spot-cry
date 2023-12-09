@@ -18,56 +18,55 @@ const StyledInput = styled.input`
 const NewPlaylistForm = ({ onCreate, onCancel }) => {
   const [playlistName, setPlaylistName] = useState('');
   const [playlistDescription, setPlaylistDescription] = useState('');
-  const [showPopup, setShowPopup] = useState(false)
-  const [loading, setLoading] = useState()
-  const [playlists, setPlaylists] = useState()
+  const [showPopup, setShowPopup] = useState(false);
+  const [loading, setLoading] = useState();
+  const [playlists, setPlaylists] = useState();
 
-  const fetchData = async () => {
+  const handleClosePopup = () => {
+    setPlaylistName('');
+    setPlaylistDescription('');
+    onCancel();
+  };
+
+  const handleCreatePlaylist = async () => {
     try {
+      if (!playlistName) {
+        console.error('O nome da playlist é obrigatório.');
+        return;
+      }
+
       setLoading(true);
 
-      const playlistsResponse = await getPlaylistsFromUser();
-      setPlaylists(playlistsResponse.data.playlists);
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error);
+      await createNewPlaylist({
+        name: playlistName,
+        description: playlistDescription,
+        songs: []
+      });
 
+      alert('Playlist criada com sucesso!');
+
+      // Chama a função fetchData diretamente após a criação da playlist
+      fetchData();
+
+      // Fecha o formulário
+      handleClosePopup();
+    } catch (error) {
+      console.error('Erro ao criar playlist:', error);
+      // Exibe alerta de erro
+      alert('Erro ao criar playlist. Por favor, tente novamente.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
-  const handleCreatePlaylist = async () => {
+  const fetchData = async () => {
     try {
-      const newPlaylistDetails = {
-        name: playlistName,
-        description: playlistDescription,
-      };
-  
-      // Chame o serviço para criar uma nova playlist
-      await createNewPlaylist(newPlaylistDetails);
-  
-      // Atualize a lista de playlists
-      fetchData();
-  
-      // Feche o popup após a criação
-      handleClosePopup();
+      const playlistsResponse = await getPlaylistsFromUser();
+      // Atualiza a lista de playlists
+      setPlaylists(playlistsResponse.data.playlists);
     } catch (error) {
-      console.error('Erro ao criar playlist:', error);
-      // Exibir ou tratar o erro, se necessário
+      console.error('Erro ao buscar dados:', error);
     }
-  };
-
-  const handleCancel = () => {
-    // Limpar os campos em caso de cancelamento
-    setPlaylistName('');
-    setPlaylistDescription('');
-
-    // Chamar a função de cancelamento, se necessário
-    onCancel();
   };
 
   return (
@@ -88,8 +87,8 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
         onChange={(e) => setPlaylistDescription(e.target.value)}
       />
 
-      <button onClick={handleCreatePlaylist}>Criar Playlist</button>
-      <button onClick={handleCancel}>Cancelar</button>
+      <button onClick={handleCreatePlaylist} disabled={loading}>Criar Playlist</button>
+      <button onClick={handleClosePopup} disabled={loading}>Cancelar</button>
     </FormContainer>
   );
 };
