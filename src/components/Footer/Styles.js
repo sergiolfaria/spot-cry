@@ -15,6 +15,7 @@ export const FooterContainer = styled.footer`
 export const FooterImage = styled.img`
   object-fit: cover;
   align-self: center;
+  filter: hue-rotate(163deg);
 `;
 
 export const FooterGrid = styled.div`
@@ -49,7 +50,7 @@ export const FakeLink = styled.p`
   font-weight: 600;
 
   &:hover {
-    color: ${COLORS.indigo};
+    color: ${COLORS.white};
   }
 `;
 

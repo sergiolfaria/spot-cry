@@ -9,6 +9,8 @@ import { COLORS } from '../../constants/colors';
 import FeedLoading from '../Loading/FeedLoading';
 import { getPlaylistsByUser } from '../../services/Playlists/GetPlaylistByUser'
 import { deletePlaylist } from '../../services/Playlists/deletePlaylist';
+import { getUserId } from '../../services/users';
+
 
 const ActionButtonsContainer = styled.div`
   display: flex;
@@ -61,23 +63,20 @@ const PlaylistsContainer = () => {
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  
   const fetchData = async () => {
     try {
       setLoading(true);
-
-      const userPlaylistsResponse = await getPlaylistsByUser();
-      setUserPlaylists(userPlaylistsResponse.data.playlists);
-
+      
       // Suponha que você tenha uma função chamada `getAllPlaylists`
       const allPlaylistsResponse = await getPlaylistsFromUser();
       setAllPlaylists(allPlaylistsResponse.data.playlists);
+      const userid = getUserId();
+      const userPlaylistsResponse = await getPlaylistsByUser(userid);
+      setUserPlaylists(userPlaylistsResponse.data.playlists);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
-
+      
       if (error.response && error.response.status === 401) {
         console.log('Token expirado, você precisa fazer login novamente!.');
         goToLoginPage();
@@ -86,27 +85,27 @@ const PlaylistsContainer = () => {
       setLoading(false);
     }
   };
-
+  
   const handleCreatePlaylistClick = () => {
     setShowPopup(true);
   };
-
+  
   const handleClosePopup = () => {
     setShowPopup(false);
   };
-
+  
   const handleCreatePlaylist = async () => {
     try {
       setLoading(true);
-
+      
       const newPlaylistDetails = {
         name: 'Nome da Playlist',
         description: 'Descrição da Playlist',
       };
-
+      
       await createNewPlaylist(newPlaylistDetails);
       handleClosePopup();
-
+      
       // Chama a função fetchData diretamente após a criação da playlist
       await fetchData();
     } catch (error) {
@@ -115,21 +114,24 @@ const PlaylistsContainer = () => {
       setLoading(false);
     }
   };
-
+  
   const handlePlaylistClick = (playlistId) => {
     setSelectedPlaylistId(playlistId);
   };
-
+  
   const handleContextMenuClick = async (action) => {
     switch (action) {
       case 'delete':
         await handleDeletePlaylist();
         break;
-      default:
-        break;
-    }
-  };
-
+        default:
+          break;
+        }
+      };
+      
+      useEffect(() => {
+        fetchData();
+      }, [])
   const handleDeletePlaylist = async () => {
     if (selectedPlaylistId) {
       setLoading(true);
@@ -161,6 +163,7 @@ const PlaylistsContainer = () => {
       <div>
         <PlaylistHeader>
           <PlaylistTitle>My Playlists</PlaylistTitle>
+          
           <CreatePlaylistButton onClick={handleCreatePlaylistClick}>
             Criar Playlist
           </CreatePlaylistButton>

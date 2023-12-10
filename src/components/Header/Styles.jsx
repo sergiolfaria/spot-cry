@@ -3,6 +3,7 @@ import { COLORS } from "../../constants/colors";
 
 export const HeaderLogo = styled.img`
     margin-left: 20px;
+    filter: hue-rotate(163deg);
 `;
 
 export const HeaderContainer = styled.div`

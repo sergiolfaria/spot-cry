@@ -56,9 +56,7 @@ function FeedPage() {
 
   return (
     <FeedContainer>
-      {/* Adiciona a propriedade onPlaylistChange para passar a função de mudança de playlist */}
       <PlaylistContainer onPlaylistChange={handlePlaylistChange} />
-      {/* Passa o ID da playlist selecionada para o componente SongsContainer */}
       <SongsContainer songs={allSongs} handlePlay={handlePlay} />
       <Playercontainer>
         <Player currentSong={currentSong} />

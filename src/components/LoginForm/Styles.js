@@ -15,6 +15,7 @@ export const LogoWithText = styled.div`
   flex-direction: column;
   align-items: center;
   width: 50vw;
+  filter: hue-rotate(163deg);
 `;
 
 export const LoginTitle = styled.h1`

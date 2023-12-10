@@ -23,7 +23,7 @@ export const Info = styled.div`
   gap: 20px;
 `;
 export const Img =styled.img`
-    filter: drop-shadow(2px 4px 7px black);
+    filter: invert(1);
 `
 
 export const InfoText = styled.div`

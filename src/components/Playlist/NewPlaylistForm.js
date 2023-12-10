@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { createNewPlaylist } from '../../services/Playlists/CreateNewPlaylist';
 import { getPlaylistsFromUser } from '../../services/Playlists/playlist';
 import { getMusicsFromData } from '../../services/Songs/getMusicData';
+import FeedLoading from '../Loading/FeedLoading';
+
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,6 +20,11 @@ const FormContainer = styled.div`
       align-items: center;
     }
   }
+`;
+
+const SongListContainer = styled.div`
+  max-height: 200px;
+  overflow-y: auto;
 `;
 
 const StyledInput = styled.input`
@@ -52,7 +59,7 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
       await createNewPlaylist({
         name: playlistName,
         description: playlistDescription,
-        songs: selectedSongs.map(song => song.id)
+        songs: selectedSongs.map((song) => song.id),
       });
 
       alert('Playlist criada com sucesso!');
@@ -73,6 +80,7 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const playlistsResponse = await getPlaylistsFromUser();
       const songsResponse = await getMusicsFromData(); // Modifique de acordo com sua implementação real
 
@@ -81,6 +89,8 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
       setAllSongs(songsResponse.data.songs);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,7 +100,7 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
 
   const handleSongCheckboxChange = (song) => {
     // Verifica se a música já está selecionada
-    if (selectedSongs.find(selectedSong => selectedSong.id === song.id)) {
+    if (selectedSongs.find((selectedSong) => selectedSong.id === song.id)) {
       // Se estiver selecionada, remove da lista de músicas selecionadas
       setSelectedSongs((prevSelectedSongs) =>
         prevSelectedSongs.filter((selectedSong) => selectedSong.id !== song.id)
@@ -100,6 +110,10 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
       setSelectedSongs((prevSelectedSongs) => [...prevSelectedSongs, song]);
     }
   };
+
+  if (loading) {
+    return <FeedLoading />;
+  }
 
   return (
     <FormContainer>
@@ -126,19 +140,21 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
         Cancelar
       </button>
 
-      <div>
-        <h3>Selecione as Músicas:</h3>
-        {allSongs.map((song) => (
-          <label key={song.id}>
-            <input
-              type="checkbox"
-              checked={selectedSongs.some(selectedSong => selectedSong.id === song.id)}
-              onChange={() => handleSongCheckboxChange(song)}
-            />
-            {song.title}
-          </label>
-        ))}
-      </div>
+      <SongListContainer>
+        <div>
+          <h3>Selecione as Músicas:</h3>
+          {allSongs.map((song) => (
+            <label key={song.id}>
+              <input
+                type="checkbox"
+                checked={selectedSongs.some((selectedSong) => selectedSong.id === song.id)}
+                onChange={() => handleSongCheckboxChange(song)}
+              />
+              {song.title}
+            </label>
+          ))}
+        </div>
+      </SongListContainer>
     </FormContainer>
   );
 };
