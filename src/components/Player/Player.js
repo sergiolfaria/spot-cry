@@ -11,6 +11,7 @@ const Player = ({ currentSong }) => {
   const [volume, setVolume] = useState(100);
   const [isMuted, setIsMuted] = useState(false);
   const [volumeBeforeMute, setVolumeBeforeMute] = useState(100);
+  const [isLoading, setIsLoading] = useState(true); // New loading state
 
   const opts = {
     height: '0',
@@ -40,6 +41,7 @@ const Player = ({ currentSong }) => {
       const duration = responseDetail.data.items[0]?.contentDetails?.duration;
       const totalDurationInSeconds = parseYoutubeDuration(duration);
       setTotalDuration(totalDurationInSeconds);
+      setIsLoading(false); // Set loading to false after fetching data
     } catch (error) {
       console.error('Error fetching video details:', error);
     }
@@ -52,11 +54,13 @@ const Player = ({ currentSong }) => {
   const [videoThumbnail, setVideoThumbnail] = useState('');
 
   useEffect(() => {
+    setIsLoading(true); // Set loading to true when a new song is selected
 
     if (playerRef.current) {
       playerRef.current.pauseVideo();
       setIsPlaying(false);
     }
+
     fetchYouTubeData();
   }, [currentSong]);
 
@@ -126,49 +130,51 @@ const Player = ({ currentSong }) => {
   };
 
   return (
-    <PlayerContainer>
-      <YouTube
-        videoId={videoIdextracted}
-        opts={opts}
-        containerClassName="audio-container"
-        onReady={onReady}
-      />
 
-      <NowPlaying>
-
-        {videoThumbnail && (
-          <img src={videoThumbnail} alt="Video Thumbnail" width="480" height="360" />
+      <PlayerContainer>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <YouTube
+              videoId={videoIdextracted}
+              opts={opts}
+              containerClassName="audio-container"
+              onReady={onReady}
+            />
+    
+            <NowPlaying>
+              {videoThumbnail && (
+                <img src={videoThumbnail} alt="Video Thumbnail" width="480" height="360" />
+              )}
+              <SongInfo>
+                <SongTitle>{currentSong.title}</SongTitle>
+                <SongArtist>{currentSong.artist}</SongArtist>
+              </SongInfo>
+            </NowPlaying>
+            <PlayerStatus>
+              <PlayerControls>
+                <ControlButton>
+                  <FontAwesomeIcon icon={faStepBackward} />
+                </ControlButton>
+                <ControlButton onClick={onPlayPauseClick}>
+                  <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+                </ControlButton>
+                <ControlButton>
+                  <FontAwesomeIcon icon={faStepForward} />
+                </ControlButton>
+                <VolumeControl type="range" min="0" max="100" value={volume} onChange={onVolumeChange} />
+                <ControlButton onClick={onMuteClick}>
+                  <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} />
+                </ControlButton>
+              </PlayerControls>
+              <ProgressBar value={progress} max={totalDuration} />
+              <span>{formatTime(progress)} / {formatTime(totalDuration)}</span>
+            </PlayerStatus>
+          </>
         )}
-        <SongInfo>
-          <SongTitle>{currentSong.title}</SongTitle>
-          <SongArtist>{currentSong.artist}</SongArtist>
-        </SongInfo>
-      </NowPlaying>
-      <PlayerStatus>
-        <PlayerControls>
-          <ControlButton>
-            <FontAwesomeIcon icon={faStepBackward} />
-          </ControlButton>
-          <ControlButton onClick={onPlayPauseClick}>
-            <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
-          </ControlButton>
-          <ControlButton>
-            <FontAwesomeIcon icon={faStepForward} />
-          </ControlButton>
-          <VolumeControl type="range" min="0" max="100" value={volume} onChange={onVolumeChange} />
-          <ControlButton onClick={onMuteClick}>
-            <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} />
-          </ControlButton>
-        </PlayerControls>
-        <ProgressBar value={progress} max={totalDuration} />
-        <span>{formatTime(progress)} / {formatTime(totalDuration)}</span>
-      </PlayerStatus>
-    </PlayerContainer>
+      </PlayerContainer>
   );
 };
 
 export default Player;
-
-
-
-

@@ -20,8 +20,7 @@ const LoadingWrapper = styled.div`
 const Loading = () => {
   return (
     <LoadingWrapper>
-      <FontAwesomeIcon icon={faSpinner} spin  style={{ color: "#3d9bff", fontSize: "2em"}} />
-      <p>Carregando...</p>
+      <FontAwesomeIcon icon={faSpinner} spin  style={{ color: "#3d9bff", fontSize: "4em"}} />
     </LoadingWrapper>
   );
 };

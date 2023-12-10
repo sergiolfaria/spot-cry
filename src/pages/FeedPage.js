@@ -50,7 +50,7 @@ function FeedPage() {
   };
 
   const handlePlaylistChange = (playlistId) => {
-    // Atualiza o estado com o ID da playlist selecionada
+    
     setSelectedPlaylistId(playlistId);
   };
 
