@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { createNewPlaylist } from '../../services/Playlists/CreateNewPlaylist';
-import { getPlaylistsFromUser } from '../../services/Playlists/playlist';
 import { getMusicsFromData } from '../../services/Songs/getMusicData';
 import Loading from '../Loading/Loading';
+import { getPlaylistTracks } from '../../services/Playlists/getPlaylistTracks';
+import { EditPlayslist } from '../../services/Playlists/EditPlayslist';
+import { COLORS } from '../../constants/colors'; // Adiciona a importação das cores
 
 const FormContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  z-index: 1009;
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-    label {
-      display: flex;
-      align-items: center;
-    }
-  }
 `;
 
 const SongListContainer = styled.div`
@@ -33,22 +30,36 @@ const StyledInput = styled.input`
   border-radius: 4px;
 `;
 
-const NewPlaylistForm = ({ onCreate, onCancel }) => {
+const Button = styled.button`
+  padding: 10px;
+  background-color: ${COLORS.blue}; // Usa a cor azul como destaque
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  &:disabled {
+    background-color: #ddd;
+    color: #666;
+    cursor: not-allowed;
+  }
+`;
+
+const EditPlaylistForm = ({ playlistId, onCancel, onUpdate }) => {
   const [playlistName, setPlaylistName] = useState('');
   const [playlistDescription, setPlaylistDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [allSongs, setAllSongs] = useState([]);
   const [selectedSongs, setSelectedSongs] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
   const [songsLoading, setSongsLoading] = useState(false);
 
-  const handleClosePopup = () => {
+  const handleCloseForm = () => {
     setPlaylistName('');
     setPlaylistDescription('');
+    setSelectedSongs([]);
     onCancel();
   };
 
-  const handleCreatePlaylist = async () => {
+  const handleUpdatePlaylist = async () => {
     try {
       if (!playlistName) {
         console.error('O nome da playlist é obrigatório.');
@@ -57,23 +68,21 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
 
       setLoading(true);
 
-      await createNewPlaylist({
+      const existingTracks = await getPlaylistTracks(playlistId);
+      const updatedTracks = [...existingTracks, ...selectedSongs.map((song) => song.id)];
+
+      await EditPlayslist(playlistId, {
         name: playlistName,
         description: playlistDescription,
-        songs: selectedSongs.map((song) => song.id),
+        tracks: updatedTracks,
       });
 
-      alert('Playlist criada com sucesso!');
-
-      // Chama a função fetchData diretamente após a criação da playlist
-      fetchData();
-
-      // Fecha o formulário
-      handleClosePopup();
+      alert('Playlist atualizada com sucesso!');
+      onUpdate();
+      handleCloseForm();
     } catch (error) {
-      console.error('Erro ao criar playlist:', error);
-      // Exibe alerta de erro
-      alert('Erro ao criar playlist. Por favor, tente novamente.');
+      console.error('Erro ao atualizar playlist:', error);
+      alert('Erro ao atualizar playlist. Por favor, tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -82,11 +91,7 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
   const fetchData = async () => {
     try {
       setSongsLoading(true);
-      const playlistsResponse = await getPlaylistsFromUser();
-      const songsResponse = await getMusicsFromData(); // Modifique de acordo com sua implementação real
-
-      // Atualiza a lista de playlists e de músicas
-      setPlaylists(playlistsResponse.data.playlists);
+      const songsResponse = await getMusicsFromData();
       setAllSongs(songsResponse.data.songs);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
@@ -97,55 +102,54 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
 
   useEffect(() => {
     fetchData();
-  }, []); // Adiciona um array vazio para garantir que o useEffect seja chamado apenas uma vez ao montar o componente
+  }, [playlistId]);
 
   const handleSongCheckboxChange = (song) => {
-    // Verifica se a música já está selecionada
     if (selectedSongs.find((selectedSong) => selectedSong.id === song.id)) {
-      // Se estiver selecionada, remove da lista de músicas selecionadas
       setSelectedSongs((prevSelectedSongs) =>
         prevSelectedSongs.filter((selectedSong) => selectedSong.id !== song.id)
       );
     } else {
-      // Se não estiver selecionada, adiciona à lista de músicas selecionadas
       setSelectedSongs((prevSelectedSongs) => [...prevSelectedSongs, song]);
     }
   };
 
   if (songsLoading) {
-    return <Loading />;
+    return (
+      <FormContainer>
+        <Loading />
+      </FormContainer>
+    );
   }
 
   return (
     <FormContainer>
-      <label htmlFor="playlistName">Nome da Playlist:</label>
       <StyledInput
         type="text"
-        id="playlistName"
+        placeholder="Nome da Playlist"
         value={playlistName}
         onChange={(e) => setPlaylistName(e.target.value)}
       />
 
-      <label htmlFor="playlistDescription">Descrição da Playlist:</label>
       <StyledInput
         type="text"
-        id="playlistDescription"
+        placeholder="Descrição da Playlist"
         value={playlistDescription}
         onChange={(e) => setPlaylistDescription(e.target.value)}
       />
 
-      <button onClick={handleCreatePlaylist} disabled={loading}>
-        Criar Playlist
-      </button>
-      <button onClick={handleClosePopup} disabled={loading}>
+      <Button onClick={handleUpdatePlaylist} disabled={loading}>
+        Atualizar Playlist
+      </Button>
+      <Button onClick={handleCloseForm} disabled={loading}>
         Cancelar
-      </button>
+      </Button>
 
       <SongListContainer>
         <div>
           <h3>Selecione as Músicas:</h3>
           {allSongs.map((song) => (
-            <label key={song.id}>
+            <label key={song.id} style={{ display: 'block', color: COLORS.blue }}>
               <input
                 type="checkbox"
                 checked={selectedSongs.some((selectedSong) => selectedSong.id === song.id)}
@@ -160,4 +164,4 @@ const NewPlaylistForm = ({ onCreate, onCancel }) => {
   );
 };
 
-export default NewPlaylistForm;
+export default EditPlaylistForm;

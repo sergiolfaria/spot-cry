@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { getPlaylistsFromUser } from '../../services/Playlists/playlist'; // Alteração na importação
+import styled from 'styled-components';
+import { getPlaylistsFromUser } from '../../services/Playlists/playlist';
 import { PlaylistContainer as Container, PlaylistHeader, PlaylistTitle, PlaylistButton, List, ListItem } from '../../pages/Styles/FeedStyles';
 import { goToLoginPage } from '../../routes/Coordinator';
-import styled from 'styled-components';
 import { createNewPlaylist } from '../../services/Playlists/CreateNewPlaylist';
 import NewPlaylistForm from './NewPlaylistForm';
 import { COLORS } from '../../constants/colors';
 import FeedLoading from '../Loading/FeedLoading';
-import { getPlaylistsByUser } from '../../services/Playlists/GetPlaylistByUser'
+import { getPlaylistsByUser } from '../../services/Playlists/GetPlaylistByUser';
+
 import { deletePlaylist } from '../../services/Playlists/deletePlaylist';
 import { getUserId } from '../../services/users';
-
+import EditPlaylistForm from './editplaylist';
 
 const ActionButtonsContainer = styled.div`
   display: flex;
@@ -34,6 +35,16 @@ const DeleteButton = styled.div`
   border: 1px solid #f5222d;
   border-radius: 4px;
 `;
+const EditButton = styled.div`
+  cursor: pointer;
+  padding: 4px;
+  color: #fff;
+  background-color: ${COLORS.blue}; 
+  border-radius: 4px;
+`;
+
+
+
 const CreatePlaylistButton = styled.button`
   padding: 10px;
   background-color: ${COLORS.blue};
@@ -54,6 +65,7 @@ const PopupContainer = styled.div`
 `;
 
 
+
 const PlaylistsContainer = () => {
   const [userPlaylists, setUserPlaylists] = useState([]);
   const [allPlaylists, setAllPlaylists] = useState([]);
@@ -62,12 +74,12 @@ const PlaylistsContainer = () => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
+  const [editingPlaylistId, setEditingPlaylistId] = useState(null);
 
-  
   const fetchData = async () => {
     try {
       setLoading(true);
-      
+
       // Suponha que você tenha uma função chamada `getAllPlaylists`
       const allPlaylistsResponse = await getPlaylistsFromUser();
       setAllPlaylists(allPlaylistsResponse.data.playlists);
@@ -76,7 +88,7 @@ const PlaylistsContainer = () => {
       setUserPlaylists(userPlaylistsResponse.data.playlists);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
-      
+
       if (error.response && error.response.status === 401) {
         console.log('Token expirado, você precisa fazer login novamente!.');
         goToLoginPage();
@@ -85,27 +97,27 @@ const PlaylistsContainer = () => {
       setLoading(false);
     }
   };
-  
+
   const handleCreatePlaylistClick = () => {
     setShowPopup(true);
   };
-  
+
   const handleClosePopup = () => {
     setShowPopup(false);
   };
-  
+
   const handleCreatePlaylist = async () => {
     try {
       setLoading(true);
-      
+
       const newPlaylistDetails = {
         name: 'Nome da Playlist',
         description: 'Descrição da Playlist',
       };
-      
+
       await createNewPlaylist(newPlaylistDetails);
       handleClosePopup();
-      
+
       // Chama a função fetchData diretamente após a criação da playlist
       await fetchData();
     } catch (error) {
@@ -114,24 +126,38 @@ const PlaylistsContainer = () => {
       setLoading(false);
     }
   };
-  
+
   const handlePlaylistClick = (playlistId) => {
     setSelectedPlaylistId(playlistId);
+    localStorage.setItem('selectedPlaylistId', playlistId);
   };
-  
-  const handleContextMenuClick = async (action) => {
+  const handleEditPlaylist = (playlistId) => {
+    setEditingPlaylistId(playlistId);
+  };
+
+  const handleContextMenuClick = async (action, playlistId) => {
     switch (action) {
       case 'delete':
         await handleDeletePlaylist();
         break;
-        default:
-          break;
-        }
-      };
-      
-      useEffect(() => {
-        fetchData();
-      }, [])
+      case 'edit':
+        handleEditPlaylist(selectedPlaylistId);
+      default:
+        break;
+    }
+  };
+
+  
+
+  const handlePayPlaylist = (playlistId) => {
+    // Implemente a lógica para pagar a playlist
+    console.log(`Pagando playlist ${playlistId}`);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const handleDeletePlaylist = async () => {
     if (selectedPlaylistId) {
       setLoading(true);
@@ -163,10 +189,18 @@ const PlaylistsContainer = () => {
       <div>
         <PlaylistHeader>
           <PlaylistTitle>My Playlists</PlaylistTitle>
-          
+
+          {editingPlaylistId ? (
+            <EditPlaylistForm
+              playlistId={editingPlaylistId}
+              onCancel={() => setEditingPlaylistId(null)}
+              onUpdate={fetchData}
+            />
+          ) : (
           <CreatePlaylistButton onClick={handleCreatePlaylistClick}>
             Criar Playlist
           </CreatePlaylistButton>
+          )}
         </PlaylistHeader>
         {loading ? (
           <FeedLoading />
@@ -180,6 +214,7 @@ const PlaylistsContainer = () => {
                   onContextMenu={(event) => showContextMenu(event, playlist._id)}
                 >
                   {index + 1} {playlist._name}
+              
                 </ListItem>
               ))}
           </List>
@@ -204,6 +239,7 @@ const PlaylistsContainer = () => {
                     onContextMenu={(event) => showContextMenu(event, playlist._id)}
                   >
                     {index + 1} {playlist._name}
+                   
                   </ListItem>
                 ))}
           </List>
@@ -212,11 +248,7 @@ const PlaylistsContainer = () => {
 
       {showPopup && (
         <PopupContainer>
-          <NewPlaylistForm
-            onCreate={handleCreatePlaylist}
-            onCancel={handleClosePopup}
-            fetchData={fetchData}
-          />
+          <NewPlaylistForm onCreate={handleCreatePlaylist} onCancel={handleClosePopup} fetchData={fetchData} />
         </PopupContainer>
       )}
 
@@ -237,9 +269,8 @@ const PlaylistsContainer = () => {
         >
           <ActionButtonsContainer>
             <CancelButton onClick={hideContextMenu}>Cancelar</CancelButton>
-            <DeleteButton onClick={() => handleContextMenuClick('delete')}>
-              Excluir
-            </DeleteButton>
+            <EditButton onClick={() => handleContextMenuClick('edit', selectedPlaylistId)}>Editar</EditButton>
+            <DeleteButton onClick={() => handleContextMenuClick('delete')}>Excluir</DeleteButton>
           </ActionButtonsContainer>
         </div>
       )}
