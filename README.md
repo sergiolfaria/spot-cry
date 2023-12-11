@@ -23,7 +23,7 @@ Instruções de Instalação
 Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/spoticry-app.git
+git clone https://github.com/sergiolfaria/spot-cry.git
 Navegue até o diretório do projeto:
 
 ```
