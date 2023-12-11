@@ -28,12 +28,10 @@ Navegue até o diretório do projeto:
 
 ```
 ```bash
-cd spoticry-app
 Instale as dependências necessárias:
 ```
 ```bash
-bash
-Copy code
+
 npm install
 Inicie o projeto:
 ```
