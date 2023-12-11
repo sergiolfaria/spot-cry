@@ -43,10 +43,9 @@ export const Button = styled.button`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   padding: 13px;
   cursor: pointer;
+  margin-top:10px;
   overflow: hidden;
   position: relative;
-  width: 40px; /* Largura inicial do botão, ajuste conforme necessário */
-  height: 40px; /* Altura inicial do botão, ajuste conforme necessário */
   transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Adiciona transições suaves */
 
   span {
@@ -59,19 +58,7 @@ export const Button = styled.button`
     transition: transform 0.3s ease-in-out;
   }
 
-  &:hover {
-    background-color: ${COLORS.darkBlue};
-    width: 120px; /* Largura durante o hover, ajuste conforme necessário */
-    height: 40px; /* Altura durante o hover, ajuste conforme necessário */
-
-    span {
-      opacity: 1;
-    }
-
-    svg {
-
-    }
-  }
+ 
 `;
 
 export const ToggleButton = styled.button`
@@ -81,18 +68,7 @@ export const ToggleButton = styled.button`
   /* Add any styles for toggle buttons here */
 `;
 
-export const PostFormContainer = styled.div`
-    width: 35%;
-    height: 50%;
-    background-color: #ffffff;
-    display: flex;
-    color:black;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 8px;
-    align-items: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-`;
+
 
 export const CenteredContainer = styled.div`
   position: fixed;
@@ -117,7 +93,8 @@ export const FormGroup = styled.div`
 export const FormField = styled.input`
   font-family: inherit;
   width: 100%;
-  margin: 0 auto; 
+  max-width: 300px; /* Adjust the max-width as needed */
+  margin: 0 auto; /* Center the input field */
   border: 0;
   border-bottom: 2px solid ${COLORS.darkGray};
   outline: 0;
@@ -132,9 +109,9 @@ export const FormField = styled.input`
   }
 
   &:placeholder-shown ~ .form__label {
-    font-size: 1.0rem;
+    font-size: 1.3rem;
     cursor: text;
-    top: 2px
+    top: 20px;
   }
 
   &:focus {
@@ -191,4 +168,3 @@ export const StyledButton = styled.button`
       color: ${(props) => (props.isCancel ? COLORS.white : "inherit")};
   }
 `;
-
