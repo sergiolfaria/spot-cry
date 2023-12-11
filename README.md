@@ -12,7 +12,7 @@ A página de login permite que os usuários autentiquem suas contas, garantindo 
 A página de feed é o coração da aplicação, proporcionando aos usuários a capacidade de descobrir novas músicas, criar playlists personalizadas, e reproduzir suas faixas favoritas. A interface intuitiva facilita a edição de playlists e a adição de músicas de maneira simples e rápida.
 
 O dropdown de playlists é ativado com um clique direito do mouse, proporcionando uma navegação fácil e acessível.
-
+## tambem é possivel escutar as musicas selecionadas no player
 ### Como Usar
 Escolha a página desejada: Home, Login ou Feed.
 Na página "Feed", explore músicas e playlists, reproduza faixas e personalize suas listas.
@@ -45,4 +45,5 @@ Tecnologias Utilizadas
 React: Biblioteca JavaScript popular para construir interfaces de usuário.
 Axios: Cliente HTTP baseado em promessas para fazer solicitações de API.
 API SpotiCry: Fonte de dados para buscar informações e músicas.
+react Router: para as rotas
 Divirta-se explorando o mundo musical com o SpotiCry!
