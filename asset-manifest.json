@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/spot-cry/static/js/main.0fa0ae07.js",
+    "main.js": "/spot-cry/static/js/main.b8fa0768.js",
     "static/media/loginBackground.jpg": "/spot-cry/static/media/loginBackground.f0890f35d73c782069a7.jpg",
     "static/media/logoLogin.png": "/spot-cry/static/media/logoLogin.b00d10e894fc74bbe0db.png",
     "static/media/logoFooter.png": "/spot-cry/static/media/logoFooter.703af3680bb760fb8df9.png",
     "static/media/logoHeader.png": "/spot-cry/static/media/logoHeader.940f01a38d475a2b068b.png",
     "static/media/readyListen.svg": "/spot-cry/static/media/readyListen.6cda976f694d44bb94342722d56fa145.svg",
     "index.html": "/spot-cry/index.html",
-    "main.0fa0ae07.js.map": "/spot-cry/static/js/main.0fa0ae07.js.map"
+    "main.b8fa0768.js.map": "/spot-cry/static/js/main.b8fa0768.js.map"
   },
   "entrypoints": [
-    "static/js/main.0fa0ae07.js"
+    "static/js/main.b8fa0768.js"
   ]
 }
