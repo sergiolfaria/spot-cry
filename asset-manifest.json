@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/spot-cry/static/js/main.0fa0ae07.js",
-    "static/media/loginBackground.jpg": "/spot-cry/static/media/loginBackground.f0890f35d73c782069a7.jpg",
-    "static/media/logoLogin.png": "/spot-cry/static/media/logoLogin.b00d10e894fc74bbe0db.png",
-    "static/media/logoFooter.png": "/spot-cry/static/media/logoFooter.703af3680bb760fb8df9.png",
-    "static/media/logoHeader.png": "/spot-cry/static/media/logoHeader.940f01a38d475a2b068b.png",
-    "static/media/readyListen.svg": "/spot-cry/static/media/readyListen.6cda976f694d44bb94342722d56fa145.svg",
-    "index.html": "/spot-cry/index.html",
-    "main.0fa0ae07.js.map": "/spot-cry/static/js/main.0fa0ae07.js.map"
+    "main.js": "/spoticry-front/static/js/main.67ae65c6.js",
+    "static/media/loginBackground.jpg": "/spoticry-front/static/media/loginBackground.f0890f35d73c782069a7.jpg",
+    "static/media/logoLogin.png": "/spoticry-front/static/media/logoLogin.b00d10e894fc74bbe0db.png",
+    "static/media/logoFooter.png": "/spoticry-front/static/media/logoFooter.703af3680bb760fb8df9.png",
+    "static/media/logoHeader.png": "/spoticry-front/static/media/logoHeader.940f01a38d475a2b068b.png",
+    "static/media/readyListen.svg": "/spoticry-front/static/media/readyListen.6cda976f694d44bb94342722d56fa145.svg",
+    "index.html": "/spoticry-front/index.html",
+    "main.67ae65c6.js.map": "/spoticry-front/static/js/main.67ae65c6.js.map"
   },
   "entrypoints": [
-    "static/js/main.0fa0ae07.js"
+    "static/js/main.67ae65c6.js"
   ]
 }
